@@ -186,7 +186,8 @@
   .skill-card h4{font-family:var(--font-mono);font-size:12px;color:var(--teal);margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
   .skill-card h4 i{font-size:13px;}
   .chips{display:flex;flex-wrap:wrap;gap:8px;}
-  .chip{font-family:var(--font-mono);font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:5px;color:var(--text-dim);}
+  .chip{font-family:var(--font-mono);font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:5px;color:var(--text-dim);display:inline-flex;align-items:center;gap:6px;}
+  .chip i{color:var(--amber);font-size:12px;}
 
   /* EXPERIENCE / LOG */
   .exp-edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
@@ -221,6 +222,7 @@
 
   /* CONTACT */
   .contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  .contact-wrap-single{grid-template-columns:1fr;max-width:520px;margin:0 auto;}
   .form-group{margin-bottom:18px;}
   label{display:block;font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin-bottom:6px;}
   input,textarea{
@@ -244,7 +246,6 @@
   }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -332,25 +333,25 @@
       <div class="skill-card">
         <h4><i class="fa-solid fa-brain"></i> Data & ML</h4>
         <div class="chips">
-          <span class="chip">Python</span><span class="chip">R</span><span class="chip">SQL</span><span class="chip">Scikit-learn</span><span class="chip">Pandas</span><span class="chip">NumPy</span>
+          <span class="chip"><i class="fa-brands fa-python"></i>Python</span><span class="chip"><i class="fa-brands fa-r-project"></i>R</span><span class="chip"><i class="fa-solid fa-database"></i>SQL</span><span class="chip"><i class="fa-solid fa-flask"></i>Scikit-learn</span><span class="chip"><i class="fa-solid fa-table"></i>Pandas</span><span class="chip"><i class="fa-solid fa-square-root-variable"></i>NumPy</span>
         </div>
       </div>
       <div class="skill-card">
         <h4><i class="fa-solid fa-server"></i> Backend</h4>
         <div class="chips">
-          <span class="chip">Java</span><span class="chip">Spring</span><span class="chip">Node.js</span><span class="chip">C#</span>
+          <span class="chip"><i class="fa-brands fa-java"></i>Java</span><span class="chip"><i class="fa-solid fa-leaf"></i>Spring</span><span class="chip"><i class="fa-brands fa-node-js"></i>Node.js</span><span class="chip"><i class="fa-solid fa-hashtag"></i>C#</span>
         </div>
       </div>
       <div class="skill-card">
         <h4><i class="fa-solid fa-display"></i> Frontend</h4>
         <div class="chips">
-          <span class="chip">JavaScript</span><span class="chip">React</span><span class="chip">HTML5 & CSS3</span>
+          <span class="chip"><i class="fa-brands fa-js"></i>JavaScript</span><span class="chip"><i class="fa-brands fa-react"></i>React</span><span class="chip"><i class="fa-brands fa-html5"></i>HTML5 & CSS3</span>
         </div>
       </div>
       <div class="skill-card">
         <h4><i class="fa-solid fa-toolbox"></i> <span data-i18n="skills.tools">Alətlər</span></h4>
         <div class="chips">
-          <span class="chip">Git / Version Control</span><span class="chip">C / C++</span>
+          <span class="chip"><i class="fa-brands fa-git-alt"></i>Git / Version Control</span><span class="chip"><i class="fa-solid fa-code"></i>C / C++</span>
         </div>
       </div>
     </div>
@@ -522,26 +523,11 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="sec-head"><span class="in-tag">In [8]:</span><h2 class="sec-title" data-i18n="contact.title">Əlaqə</h2></div>
-    <div class="contact-wrap">
-      <form onsubmit="handleSubmit(event)">
-        <div class="form-group">
-          <label for="name" data-i18n="contact.name">Ad</label>
-          <input type="text" id="name" required data-i18n-placeholder="contact.name.ph" placeholder="Adınız">
-        </div>
-        <div class="form-group">
-          <label for="email" data-i18n="contact.email">E-poçt</label>
-          <input type="email" id="email" required placeholder="siz@nümunə.com">
-        </div>
-        <div class="form-group">
-          <label for="message" data-i18n="contact.message">Mesaj</label>
-          <textarea id="message" required data-i18n-placeholder="contact.message.ph" placeholder="Mesajınızı bura yazın..."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="border:none;cursor:pointer;" data-i18n="contact.send">Göndər →</button>
-        <div id="formNote" style="font-family:var(--font-mono);font-size:12px;color:var(--teal);margin-top:12px;"></div>
-      </form>
+    <div class="contact-wrap contact-wrap-single">
       <div class="contact-links">
+        <a href="mailto:akhundzadahaji@gmail.com"><i class="fa-solid fa-envelope"></i><span>Email</span><span>akhundzadahaji@gmail.com</span></a>
         <a href="https://wa.me/994516520070?text=Salam%2C%20portfolionuzu%20g%C3%B6rd%C3%BCm%2C%20sizinl%C9%99%20%C9%99laq%C9%99%20saxlamaq%20ist%C9%99yir%C9%99m." id="waLink" target="_blank"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span><span>+994 51 652 00 70</span></a>
-        <a href="tel:+994516520070"><i class="fa-solid fa-phone"></i><span data-i18n="contact.phone">Telefon</span><span>+994 (51) 652-00-70</span></a>
+        <a href="tel:+994516520070"><i class="fa-solid fa-phone"></i><span data-i18n="contact.phone">Telefon</span><span>+994 51 652 00 70</span></a>
         <a href="https://github.com/haJye" target="_blank"><i class="fa-brands fa-github"></i><span>GitHub</span><span>@haJye</span></a>
         <a href="https://www.linkedin.com/in/hajy/" target="_blank"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span><span>in/hajy</span></a>
         <a href="https://www.instagram.com/hajyakh/" target="_blank"><i class="fa-brands fa-instagram"></i><span>Instagram</span><span>@hajyakh</span></a>
@@ -556,56 +542,6 @@
 <footer data-i18n="footer.text">© 2026 Hacı Axundzadə — bu sayt data ilə işlənib.</footer>
 
 <script>
-/* ================= EMAILJS CONTACT FORM ================= */
-const EMAILJS_PUBLIC_KEY = "ToNje3WeXYAsml3yi";   // EmailJS Dashboard → Account → General → Public Key
-const EMAILJS_SERVICE_ID = "service_hchkurk";
-const EMAILJS_TEMPLATE_ID = "template_7s85rwf"; // EmailJS Dashboard → Email Templates → Template ID
-
-if (window.emailjs) {
-  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-}
-
-const formMessages = {
-  sending:{az:"Göndərilir...",en:"Sending...",ru:"Отправка..."},
-  success:{az:"Mesajınız göndərildi, təşəkkürlər!",en:"Your message has been sent, thank you!",ru:"Ваше сообщение отправлено, спасибо!"},
-  error:{az:"Xəta baş verdi. Zəhmət olmasa birbaşa email göndərin.",en:"Something went wrong. Please email me directly instead.",ru:"Произошла ошибка. Пожалуйста, напишите мне на почту напрямую."}
-};
-
-function currentLang(){
-  return document.documentElement.getAttribute('lang') || 'az';
-}
-
-function handleSubmit(e){
-  e.preventDefault();
-  const lang = currentLang();
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const message = document.getElementById('message').value;
-  const note = document.getElementById('formNote');
-  const btn = e.target.querySelector('button[type="submit"]');
-
-  note.style.color = 'var(--teal)';
-  note.textContent = formMessages.sending[lang];
-  if(btn) btn.disabled = true;
-
-  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-    name: name,
-    email: email,
-    message: message,
-    reply_to: email
-  }).then(function(){
-    note.style.color = 'var(--teal)';
-    note.textContent = formMessages.success[lang];
-    e.target.reset();
-  }).catch(function(err){
-    console.error('EmailJS error:', err);
-    note.style.color = '#e05a5a';
-    note.textContent = formMessages.error[lang];
-  }).finally(function(){
-    if(btn) btn.disabled = false;
-  });
-}
-
 /* ================= THEME (dark/light) ================= */
 (function(){
   const stored = localStorage.getItem('theme');
