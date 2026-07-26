@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hacı Axundzadə — Data Scientist</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f1419'/%3E%3Ctext x='32' y='42' font-family='monospace' font-size='24' font-weight='700' fill='%23e8a33d' text-anchor='middle'%3EHA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -182,7 +183,8 @@
   /* SKILLS */
   .skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}
   .skill-card{border:1px solid var(--line);border-radius:8px;padding:20px;background:var(--panel);}
-  .skill-card h4{font-family:var(--font-mono);font-size:12px;color:var(--teal);margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase;}
+  .skill-card h4{font-family:var(--font-mono);font-size:12px;color:var(--teal);margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+  .skill-card h4 i{font-size:13px;}
   .chips{display:flex;flex-wrap:wrap;gap:8px;}
   .chip{font-family:var(--font-mono);font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:5px;color:var(--text-dim);}
 
@@ -228,7 +230,10 @@
   input:focus,textarea:focus{outline:none;border-color:var(--teal);}
   textarea{min-height:120px;resize:vertical;}
   .contact-links{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:24px;}
-  .contact-links a{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);font-family:var(--font-mono);font-size:13px;color:var(--text-dim);transition:.2s;}
+  .contact-links a{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-family:var(--font-mono);font-size:13px;color:var(--text-dim);transition:.2s;}
+  .contact-links a i{width:16px;text-align:center;font-size:15px;color:var(--amber);flex-shrink:0;}
+  .contact-links a span:nth-child(2){flex:1;}
+  .contact-links a span:last-child{color:var(--text-dim);text-align:right;}
   .contact-links a:last-child{border-bottom:none;}
   .contact-links a:hover{color:var(--amber);}
 
@@ -238,6 +243,7 @@
     .about-grid,.contact-wrap{grid-template-columns:1fr;}
   }
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
@@ -306,8 +312,8 @@
     <div class="sec-head"><span class="in-tag">In [2]:</span><h2 class="sec-title" data-i18n="about.title">Haqqımda</h2></div>
     <div class="about-grid">
       <div>
-        <p data-i18n="about.p1">Salam! Mən <b>Hacı</b> — Azərbaycan-Fransız Universitetində (UFAZ) Data Science and Artificial Intelligence ixtisası üzrə magistr təhsili almışam. <b>Python, SQL, Machine Learning və Deep Learning</b> ilə işləyir, Pandas və NumPy kitabxanalarından istifadə edərək məlumatları analiz edir və emal edirəm. Məqsədim məlumatları dəyərli nəticələrə çevirən və real problemlərin həllinə kömək edən həllər hazırlamaqdır.</p>
-        <p data-i18n="about.p2">Eyni zamanda <b>React, Java və Spring Boot</b> texnologiyalarından istifadə edərək veb tətbiqlər hazırlayıram. Məlumatların analizi və data yönümlü problemlərin həlli sahəsində biliklərimi daim genişləndirir və yeni texnologiyaları praktik layihələrdə tətbiq edirəm.</p>
+        <p data-i18n="about.p1">Salam! Mən <b>Hacı</b> — Azərbaycan-Fransız Universitetinin (UFAZ) Data Science and Artificial Intelligence ixtisası üzrə magistr məzunuyam. <b>Python, SQL, Machine Learning və Deep Learning</b> sahələrində nəzəri və praktiki biliklərə malikəm, həmçinin Pandas və NumPy kitabxanaları ilə məlumatların analizi və emalı üzrə təcrübəm var.</p>
+        <p data-i18n="about.p2">Bundan əlavə, <b>React, Java və Spring Boot</b> texnologiyalarından istifadə edərək veb tətbiqlərin hazırlanması üzrə bacarıqlara sahibəm və data yönümlü problemlərin həllində biliklərimi inkişaf etdirməyə davam edirəm.</p>
       </div>
       <div class="meta-list">
         <div><span data-i18n="about.meta.role">rol</span><span data-i18n="about.meta.roleval">Data Scientist</span></div>
@@ -324,25 +330,25 @@
     <div class="sec-head"><span class="in-tag">In [3]:</span><h2 class="sec-title" data-i18n="skills.title">Bacarıqlar</h2></div>
     <div class="skill-groups">
       <div class="skill-card">
-        <h4>Data & ML</h4>
+        <h4><i class="fa-solid fa-brain"></i> Data & ML</h4>
         <div class="chips">
           <span class="chip">Python</span><span class="chip">R</span><span class="chip">SQL</span><span class="chip">Scikit-learn</span><span class="chip">Pandas</span><span class="chip">NumPy</span>
         </div>
       </div>
       <div class="skill-card">
-        <h4>Backend</h4>
+        <h4><i class="fa-solid fa-server"></i> Backend</h4>
         <div class="chips">
           <span class="chip">Java</span><span class="chip">Spring</span><span class="chip">Node.js</span><span class="chip">C#</span>
         </div>
       </div>
       <div class="skill-card">
-        <h4>Frontend</h4>
+        <h4><i class="fa-solid fa-display"></i> Frontend</h4>
         <div class="chips">
           <span class="chip">JavaScript</span><span class="chip">React</span><span class="chip">HTML5 & CSS3</span>
         </div>
       </div>
       <div class="skill-card">
-        <h4 data-i18n="skills.tools">Alətlər</h4>
+        <h4><i class="fa-solid fa-toolbox"></i> <span data-i18n="skills.tools">Alətlər</span></h4>
         <div class="chips">
           <span class="chip">Git / Version Control</span><span class="chip">C / C++</span>
         </div>
@@ -350,7 +356,7 @@
     </div>
 
     <div class="skill-card" style="margin-top:24px;">
-      <h4 data-i18n="skills.langs">Dillər</h4>
+      <h4><i class="fa-solid fa-language"></i> <span data-i18n="skills.langs">Dillər</span></h4>
       <div class="chips" data-i18n="skills.langs.val">
         <span class="chip">Azərbaycan — ana dili</span><span class="chip">İngilis — yaxşı</span><span class="chip">Rus — başlanğıc</span><span class="chip">Fransız — başlanğıc</span>
       </div>
@@ -494,7 +500,19 @@
           <p data-i18n="cert3.desc">IBM tərəfindən hazırlanmış və Coursera vasitəsilə təqdim olunan kurs — verilənlər bazaları və SQL-in Python ilə data science kontekstində istifadəsi.</p>
           <div class="proj-links">
             <a href="certificates/cert-sql-ibm.pdf" target="_blank" data-i18n="cert.view">Sertifikata bax →</a>
-            <a href="https://coursera.org/verify/89E849ACCAS9" target="_blank" data-i18n="cert.verify">Doğrulamaq →</a>
+            <a href="https://coursera.org/share/57c5297ad86ecd752f3276bd4b26b512" target="_blank" data-i18n="cert.coursera">Coursera →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top"><span>Coursera</span><span>2024</span></div>
+        <div class="proj-body">
+          <h3 data-i18n="cert4.title">Programming for Everybody (Getting Started with Python)</h3>
+          <div class="stack-row"><span>Python</span></div>
+          <p data-i18n="cert4.desc">Python proqramlaşdırma dilinin əsaslarına giriş kursu — dəyişənlər, funksiyalar və əsas proqramlaşdırma məntiqi.</p>
+          <div class="proj-links">
+            <a href="https://coursera.org/share/45c22156d521e0688b68d2243abb0e99" target="_blank" data-i18n="cert.coursera">Coursera →</a>
           </div>
         </div>
       </div>
@@ -522,14 +540,13 @@
         <div id="formNote" style="font-family:var(--font-mono);font-size:12px;color:var(--teal);margin-top:12px;"></div>
       </form>
       <div class="contact-links">
-        <a href="https://wa.me/994516520070?text=Salam%2C%20portfolionuzu%20g%C3%B6rd%C3%BCm%2C%20sizinl%C9%99%20%C9%99laq%C9%99%20saxlamaq%20ist%C9%99yir%C9%99m." id="waLink" target="_blank"><span>WhatsApp</span><span>+994 51 652 00 70</span></a>
-        <a href="mailto:akhundzadahaji@gmail.com"><span>Email</span><span>akhundzadahaji@gmail.com</span></a>
-        <a href="tel:+994516520070"><span data-i18n="contact.phone">Telefon</span><span>+994 (51) 652-00-70</span></a>
-        <a href="https://github.com/haJye" target="_blank"><span>GitHub</span><span>@haJye</span></a>
-        <a href="https://www.linkedin.com/in/hajy/" target="_blank"><span>LinkedIn</span><span>in/hajy</span></a>
-        <a href="https://www.instagram.com/hajyakh/" target="_blank"><span>Instagram</span><span>@hajyakh</span></a>
-        <a href="https://www.facebook.com/akhundzada.hajy" target="_blank"><span>Facebook</span><span>akhundzada.hajy</span></a>
-        <a href="https://www.hackerrank.com/axundzade02" target="_blank"><span>HackerRank</span><span>axundzade02</span></a>
+        <a href="https://wa.me/994516520070?text=Salam%2C%20portfolionuzu%20g%C3%B6rd%C3%BCm%2C%20sizinl%C9%99%20%C9%99laq%C9%99%20saxlamaq%20ist%C9%99yir%C9%99m." id="waLink" target="_blank"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span><span>+994 51 652 00 70</span></a>
+        <a href="tel:+994516520070"><i class="fa-solid fa-phone"></i><span data-i18n="contact.phone">Telefon</span><span>+994 (51) 652-00-70</span></a>
+        <a href="https://github.com/haJye" target="_blank"><i class="fa-brands fa-github"></i><span>GitHub</span><span>@haJye</span></a>
+        <a href="https://www.linkedin.com/in/hajy/" target="_blank"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span><span>in/hajy</span></a>
+        <a href="https://www.instagram.com/hajyakh/" target="_blank"><i class="fa-brands fa-instagram"></i><span>Instagram</span><span>@hajyakh</span></a>
+        <a href="https://www.facebook.com/akhundzada.hajy" target="_blank"><i class="fa-brands fa-facebook"></i><span>Facebook</span><span>akhundzada.hajy</span></a>
+        <a href="https://www.hackerrank.com/axundzade02" target="_blank"><i class="fa-brands fa-hackerrank"></i><span>HackerRank</span><span>axundzade02</span></a>
       </div>
     </div>
   </section>
@@ -642,13 +659,13 @@ const translations = {
 
   "about.title":{az:"Haqqımda",en:"About",ru:"Обо мне"},
   "about.p1":{
-    az:"Salam! Mən <b>Hacı</b> — Azərbaycan-Fransız Universitetində (UFAZ) Data Science and Artificial Intelligence ixtisası üzrə magistr təhsili almışam. <b>Python, SQL, Machine Learning və Deep Learning</b> ilə işləyir, Pandas və NumPy kitabxanalarından istifadə edərək məlumatları analiz edir və emal edirəm. Məqsədim məlumatları dəyərli nəticələrə çevirən və real problemlərin həllinə kömək edən həllər hazırlamaqdır.",
-    en:"Hi! I'm <b>Haji</b> — a Master's graduate in Data Science and Artificial Intelligence from the French-Azerbaijani University (UFAZ). I have theoretical and practical knowledge in <b>Python, SQL, Machine Learning and Deep Learning</b>, along with experience analyzing and processing data with the Pandas and NumPy libraries.",
+    az:"Salam! Mən <b>Hacı</b> — Azərbaycan-Fransız Universitetinin (UFAZ) Data Science and Artificial Intelligence ixtisası üzrə magistr məzunuyam. <b>Python, SQL, Machine Learning və Deep Learning</b> sahələrində nəzəri və praktiki biliklərə malikəm, həmçinin Pandas və NumPy kitabxanaları ilə məlumatların analizi və emalı üzrə təcrübəm var.",
+    en:"Hi! I'm <b>Haji</b> — a results-driven machine learning engineer with hands-on experience in Python's data science stack (<b>Pandas, NumPy, Scikit-learn</b>) and frameworks like <b>TensorFlow and PyTorch</b>. I'm skilled in data preprocessing, feature engineering, and deploying models for classification, regression, and clustering.",
     ru:"Привет! Я <b>Хаджи</b> — магистр по направлению Data Science and Artificial Intelligence Французско-Азербайджанского университета (UFAZ). Обладаю теоретическими и практическими знаниями в области <b>Python, SQL, Machine Learning и Deep Learning</b>, а также опытом анализа и обработки данных с помощью Pandas и NumPy."
   },
   "about.p2":{
-    az:"Eyni zamanda <b>React, Java və Spring Boot</b> texnologiyalarından istifadə edərək veb tətbiqlər hazırlayıram. Məlumatların analizi və data yönümlü problemlərin həlli sahəsində biliklərimi daim genişləndirir və yeni texnologiyaları praktik layihələrdə tətbiq edirəm.",
-    en:"I also have skills building web applications with <b>React, Java and Spring Boot</b>, and I continuously develop my knowledge in solving data-driven problems.",
+    az:"Bundan əlavə, <b>React, Java və Spring Boot</b> texnologiyalarından istifadə edərək veb tətbiqlərin hazırlanması üzrə bacarıqlara sahibəm və data yönümlü problemlərin həllində biliklərimi inkişaf etdirməyə davam edirəm.",
+    en:"I'm also adept at data visualization, SQL management, and building user-friendly web interfaces with <b>HTML, CSS, JavaScript, React</b>, and backend tools like <b>Java and Spring Boot</b>.",
     ru:"Также обладаю навыками разработки веб-приложений с использованием <b>React, Java и Spring Boot</b> и постоянно развиваю свои знания в решении задач, основанных на данных."
   },
   "about.meta.role":{az:"rol",en:"role",ru:"роль"},
@@ -719,6 +736,7 @@ const translations = {
   "certs.title":{az:"Sertifikatlar",en:"Certificates",ru:"Сертификаты"},
   "cert.view":{az:"Sertifikata bax →",en:"View certificate →",ru:"Смотреть сертификат →"},
   "cert.verify":{az:"Doğrulamaq →",en:"Verify →",ru:"Проверить →"},
+  "cert.coursera":{az:"Coursera →",en:"Coursera →",ru:"Coursera →"},
 
   "cert1.title":{az:"Frontend-Developer Kursu",en:"Frontend-Developer Course",ru:"Курс Frontend-разработчика"},
   "cert1.desc":{
@@ -739,6 +757,13 @@ const translations = {
     az:"IBM tərəfindən hazırlanmış və Coursera vasitəsilə təqdim olunan kurs — verilənlər bazaları və SQL-in Python ilə data science kontekstində istifadəsi.",
     en:"A course developed by IBM and offered through Coursera — covers databases and SQL usage with Python in a data science context.",
     ru:"Курс, разработанный IBM и предлагаемый через Coursera — базы данных и использование SQL с Python в контексте data science."
+  },
+
+  "cert4.title":{az:"Programming for Everybody (Getting Started with Python)",en:"Programming for Everybody (Getting Started with Python)",ru:"Programming for Everybody (Getting Started with Python)"},
+  "cert4.desc":{
+    az:"Python proqramlaşdırma dilinin əsaslarına giriş kursu — dəyişənlər, funksiyalar və əsas proqramlaşdırma məntiqi.",
+    en:"An introductory course to the Python programming language — variables, functions, and core programming logic.",
+    ru:"Вводный курс по языку программирования Python — переменные, функции и основы программной логики."
   },
 
   "contact.title":{az:"Əlaqə",en:"Contact",ru:"Контакты"},
