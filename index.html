@@ -1,581 +1,76 @@
-<!DOCTYPE html>
-<html lang="az">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hacı Axundzadə — Data Scientist</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f1419'/%3E%3Ctext x='32' y='42' font-family='monospace' font-size='24' font-weight='700' fill='%23e8a33d' text-anchor='middle'%3EHA%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#0f1419;
-    --panel:#161d27;
-    --panel-2:#1c2530;
-    --line:#26323f;
-    --text:#e8e6e1;
-    --text-dim:#8a97a6;
-    --amber:#e8a33d;
-    --teal:#4fb0a5;
-    --font-display:'Space Grotesk', sans-serif;
-    --font-body:'Inter', sans-serif;
-    --font-mono:'JetBrains Mono', monospace;
-  }
-  html[data-theme="light"]{
-    --ink:#f5f3ee;
-    --panel:#ffffff;
-    --panel-2:#eeeae1;
-    --line:#ddd6c8;
-    --text:#1c1a16;
-    --text-dim:#5c574c;
-    --amber:#b5691a;
-    --teal:#0f7a6d;
-  }
-  html{transition:background .2s;}
-  body{transition:background-color .2s, color .2s;}
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--ink);
-    color:var(--text);
-    font-family:var(--font-body);
-    line-height:1.6;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size:48px 48px;
-    background-position:-1px -1px;
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{animation:none !important; transition:none !important;}
-  }
-  a{color:inherit;text-decoration:none;}
-  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;}
-
-  /* NAV */
-  header{
-    position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(10px);
-    background:rgba(15,20,25,.82);
-    border-bottom:1px solid var(--line);
-  }
-  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;max-width:1040px;margin:0 auto;position:relative;}
-  .logo{font-family:var(--font-mono);font-size:15px;color:var(--amber);text-decoration:none;cursor:pointer;display:inline-block;flex-shrink:0;}
-  .logo span{color:var(--text-dim);}
-  .navlinks{display:flex;align-items:center;gap:22px;font-family:var(--font-mono);font-size:13px;color:var(--text-dim);}
-  .navlinks a:hover{color:var(--amber);}
-  .navlinks a{transition:color .2s;}
-  .navtoggle{display:none;background:none;border:1px solid var(--line);color:var(--text);font-family:var(--font-mono);padding:6px 10px;border-radius:4px;font-size:16px;cursor:pointer;}
-  .nav-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
-  .lang-switch{display:flex;gap:2px;border:1px solid var(--line);border-radius:6px;overflow:hidden;font-family:var(--font-mono);font-size:11px;}
-  .lang-switch button{background:none;border:none;color:var(--text-dim);padding:6px 9px;cursor:pointer;transition:.2s;}
-  .lang-switch button:hover{color:var(--text);}
-  .lang-switch button.active{background:var(--amber);color:#181206;font-weight:600;}
-  .theme-toggle{background:none;border:1px solid var(--line);color:var(--text);border-radius:6px;padding:6px 9px;cursor:pointer;font-size:14px;line-height:1;transition:.2s;}
-  .theme-toggle:hover{border-color:var(--amber);}
-  .cv-btn{font-family:var(--font-mono);font-size:12px;padding:7px 14px;border-radius:6px;border:1px solid var(--amber);color:var(--amber);transition:.2s;white-space:nowrap;}
-  .cv-btn:hover{background:var(--amber);color:#181206;}
-  @media (max-width:760px){
-    .navtoggle{display:inline-block;}
-    .navlinks{
-      display:none;
-      position:absolute;top:100%;left:0;right:0;
-      flex-direction:column;align-items:flex-start;gap:16px;
-      background:var(--panel);border-bottom:1px solid var(--line);
-      padding:20px 28px 26px;
-    }
-    .navlinks.open{display:flex;}
-    .navlinks .lang-switch{margin-top:4px;}
-    .navlinks .cv-btn{width:100%;text-align:center;}
-  }
-
-  /* HERO */
-  .hero{padding:90px 0 60px;}
-  .hero-grid{display:grid;grid-template-columns:1fr;gap:44px;align-items:start;}
-  .photo-frame{position:relative;width:230px;}
-  .photo-frame img{
-    width:230px;height:230px;object-fit:cover;border-radius:10px;
-    border:1px solid var(--line);
-    filter:grayscale(15%) contrast(1.03);
-  }
-  .photo-frame::before,.photo-frame::after{
-    content:"";position:absolute;width:16px;height:16px;
-    border:2px solid var(--amber);opacity:.8;
-  }
-  .photo-frame::before{top:-6px;left:-6px;border-right:none;border-bottom:none;}
-  .photo-frame::after{bottom:-6px;right:-6px;border-left:none;border-top:none;}
-  @media (max-width:680px){
-    .hero-grid{grid-template-columns:1fr;}
-    .photo-frame{width:160px;order:-1;}
-    .photo-frame img{width:160px;height:160px;}
-  }
-  .cell-tag{
-    font-family:var(--font-mono);font-size:12px;color:var(--teal);
-    display:flex;align-items:center;gap:8px;margin-bottom:18px;
-  }
-  .cell-tag::before{content:"";width:6px;height:6px;background:var(--teal);border-radius:50%;display:inline-block;}
-  h1{
-    font-family:var(--font-display);
-    font-weight:700;
-    font-size:clamp(38px,6vw,64px);
-    line-height:1.05;
-    letter-spacing:-.02em;
-  }
-  h1 .accent{color:var(--amber);}
-  .role-line{
-    font-family:var(--font-mono);
-    color:var(--text-dim);
-    font-size:16px;
-    margin-top:16px;
-  }
-  .role-line .tealtxt{color:var(--teal);}
-  .hero-desc{max-width:560px;margin-top:22px;color:var(--text-dim);font-size:16px;}
-  .hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
-  .btn{
-    font-family:var(--font-mono);font-size:13px;
-    padding:12px 22px;border-radius:6px;
-    border:1px solid var(--line);
-    transition:.2s;
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .btn-primary{background:var(--amber);color:#181206;border-color:var(--amber);font-weight:500;}
-  .btn-primary:hover{background:#f5b452;}
-  .btn-ghost:hover{border-color:var(--teal);color:var(--teal);}
-
-  /* terminal box */
-  .term-box{margin-top:56px;border:1px solid var(--line);background:var(--panel);border-radius:10px;overflow:hidden;}
-  .term-head{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel-2);}
-  .term-dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
-  .term-dot.r{background:#e8615d;} .term-dot.y{background:#e8c33d;} .term-dot.g{background:#4fb06a;}
-  .term-title{margin-left:8px;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);}
-  .term-body{padding:20px 22px;font-family:var(--font-mono);font-size:13.5px;line-height:1.9;}
-  .term-body .prompt{color:var(--teal);}
-  .term-body .cmd{color:var(--text);}
-  .term-body .out-key{color:var(--text-dim);}
-  .term-body .out-val{color:var(--amber);}
-  .term-cursor{display:inline-block;width:8px;height:15px;background:var(--amber);vertical-align:middle;animation:blink 1s step-end infinite;margin-left:2px;}
-  @keyframes blink{50%{opacity:0;}}
-  .term-line{opacity:0;animation:fadein .4s ease-out forwards;}
-  .term-line:nth-child(1){animation-delay:.1s;}
-  .term-line:nth-child(2){animation-delay:.5s;}
-  .term-line:nth-child(3){animation-delay:.9s;}
-  .term-line:nth-child(4){animation-delay:1.3s;}
-  .term-line:nth-child(5){animation-delay:1.7s;}
-  @keyframes fadein{to{opacity:1;}}
-
-  /* SECTION generic */
-  section{padding:70px 0;border-top:1px solid var(--line);scroll-margin-top:84px;}
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:36px;}
-  .in-tag{font-family:var(--font-mono);font-size:13px;color:var(--text-dim);}
-  .in-tag b{color:var(--teal);}
-  .sec-title{font-family:var(--font-display);font-size:28px;font-weight:600;}
-
-  /* ABOUT */
-  .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;}
-  .about-grid p{color:var(--text-dim);margin-bottom:16px;}
-  .about-grid p b{color:var(--text);font-weight:500;}
-  .meta-list{font-family:var(--font-mono);font-size:13px;border:1px solid var(--line);border-radius:8px;background:var(--panel);}
-  .meta-list div{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);}
-  .meta-list div:last-child{border-bottom:none;}
-  .meta-list span:first-child{color:var(--text-dim);}
-  .meta-list span:last-child{color:var(--amber);}
-
-  /* SKILLS */
-  .skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}
-  .skill-card{border:1px solid var(--line);border-radius:8px;padding:20px;background:var(--panel);}
-  .skill-card h4{font-family:var(--font-mono);font-size:12px;color:var(--teal);margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
-  .skill-card h4 i{font-size:13px;}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;}
-  .chip{font-family:var(--font-mono);font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:5px;color:var(--text-dim);display:inline-flex;align-items:center;gap:6px;}
-  .chip i{color:var(--amber);font-size:12px;}
-
-  /* EXPERIENCE / LOG */
-  .exp-edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
-  .exp-edu-grid h3{font-family:var(--font-mono);font-size:12px;color:var(--teal);margin-bottom:24px;letter-spacing:.05em;text-transform:uppercase;}
-  .log{border-left:2px solid var(--line);padding-left:26px;margin-left:6px;}
-  .log-item{position:relative;padding-bottom:34px;}
-  .log-item:last-child{padding-bottom:0;}
-  .log-item::before{content:"";position:absolute;left:-32px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--ink);border:2px solid var(--amber);}
-  .log-item.edu::before{border-color:var(--teal);}
-  .log-time{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin-bottom:4px;}
-  .log-title{font-family:var(--font-display);font-weight:600;font-size:18px;margin-bottom:6px;}
-  .log-desc{color:var(--text-dim);font-size:14px;max-width:560px;}
-  @media (max-width:760px){
-    .exp-edu-grid{grid-template-columns:1fr;}
-  }
-
-  /* PROJECTS */
-  .proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;}
-  .proj-card{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden;display:flex;flex-direction:column;transition:.2s;}
-  .proj-card:hover{border-color:var(--amber);transform:translateY(-3px);}
-  .proj-top{padding:16px 18px;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);display:flex;justify-content:space-between;border-bottom:1px solid var(--line);}
-  .proj-body{padding:18px;flex:1;display:flex;flex-direction:column;}
-  .proj-body h3{font-family:var(--font-display);font-size:18px;margin-bottom:8px;}
-  .proj-body p{color:var(--text-dim);font-size:13.5px;flex:1;margin-bottom:16px;}
-  .proj-links{display:flex;gap:10px;font-family:var(--font-mono);font-size:12px;}
-  .proj-links a{color:var(--teal);border-bottom:1px solid transparent;}
-  .proj-links a:hover{border-color:var(--teal);}
-  .stack-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
-  .stack-row span{font-size:11px;font-family:var(--font-mono);color:var(--amber);background:rgba(232,163,61,.08);padding:2px 8px;border-radius:4px;}
-  .proj-media{width:100%;height:150px;overflow:hidden;border-bottom:1px solid var(--line);background:var(--panel-2);}
-  .proj-media img,.proj-media video{width:100%;height:100%;object-fit:cover;display:block;}
-
-  /* CONTACT */
-  .contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
-  .contact-wrap-single{grid-template-columns:1fr;max-width:520px;margin:0 auto;}
-  .form-group{margin-bottom:18px;}
-  label{display:block;font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin-bottom:6px;}
-  input,textarea{
-    width:100%;background:var(--panel);border:1px solid var(--line);border-radius:6px;
-    padding:12px 14px;color:var(--text);font-family:var(--font-body);font-size:14px;
-  }
-  input:focus,textarea:focus{outline:none;border-color:var(--teal);}
-  textarea{min-height:120px;resize:vertical;}
-  .contact-links{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:24px;}
-  .contact-links a{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-family:var(--font-mono);font-size:13px;color:var(--text-dim);transition:.2s;}
-  .contact-links a i{width:16px;text-align:center;font-size:15px;color:var(--amber);flex-shrink:0;}
-  .contact-links a span:nth-child(2){flex:1;}
-  .contact-links a span:last-child{color:var(--text-dim);text-align:right;}
-  .contact-links a:last-child{border-bottom:none;}
-  .contact-links a:hover{color:var(--amber);}
-
-  footer{border-top:1px solid var(--line);padding:28px 0;text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--text-dim);}
-
-  @media (max-width:760px){
-    .about-grid,.contact-wrap{grid-template-columns:1fr;}
-  }
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-<body>
-
-<header>
-  <nav>
-    <a href="#" class="logo" id="logoHome">haJy<span>.dev</span></a>
-    <div class="navlinks" id="navLinks">
-      <a href="#about" data-i18n="nav.about">Haqqımda</a>
-      <a href="#skills" data-i18n="nav.skills">Bacarıqlar</a>
-      <a href="#experience" data-i18n="nav.experience">Təcrübə</a>
-      <a href="#projects" data-i18n="nav.projects">Layihələr</a>
-      <a href="#certificates" data-i18n="nav.certificates">Sertifikatlar</a>
-      <a href="#contact" data-i18n="nav.contact">Əlaqə</a>
-      <div class="lang-switch" id="langSwitch">
-        <button data-lang="az" class="active">AZ</button>
-        <button data-lang="en">EN</button>
-        <button data-lang="ru">RU</button>
-      </div>
-      <a href="Haci_Axundzade_CV.pdf" download id="cvLink" class="cv-btn" data-i18n="nav.cv">CV yüklə</a>
-    </div>
-    <div class="nav-right">
-      <button class="theme-toggle" id="themeToggle" title="Tema" aria-label="Tema dəyiş">🌙</button>
-      <button class="navtoggle" id="navToggle" aria-label="Menyu">☰</button>
-    </div>
-  </nav>
-</header>
-
+<!DOCTYPE html><html lang="az"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Hacı Axundzadə — Data Scientist, MSc @ UFAZ"><title>Hacı Axundzadə — Data Scientist</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%230b0d10%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-family=%27Arial%27 font-size=%2723%27 font-weight=%27800%27 fill=%27%23f2b84b%27 text-anchor=%27middle%27%3EHA%3C/text%3E%3C/svg%3E"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><style>
+:root{--bg:#080a0d;--panel:#10141a;--panel2:#151b22;--line:#252e38;--text:#f2f1ed;--muted:#8b95a2;--amber:#f2b84b;--teal:#59c5b8;--display:"Space Grotesk",sans-serif;--body:"DM Sans",sans-serif;--mono:"JetBrains Mono",monospace}
+:root[data-theme=light]{--bg:#f4f5f1;--panel:#fff;--panel2:#eef0eb;--line:#dfe3dc;--text:#11151a;--muted:#68717c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.65 var(--body);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.22;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(#000,transparent 85%)}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}::selection{background:var(--amber);color:#111}
+.wrap{width:min(1160px,calc(100% - 40px));margin:auto}
+header{position:fixed;inset:0 0 auto;z-index:50;height:72px;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+nav{width:min(1240px,calc(100% - 40px));height:72px;margin:auto;display:flex;align-items:center;justify-content:space-between}.logo{font:700 20px var(--mono);letter-spacing:-.07em}.logo span{color:var(--amber)}
+.navlinks{display:flex;align-items:center;gap:22px}.navlinks>a{font:500 11px var(--mono);color:var(--muted);transition:.2s}.navlinks>a:hover{color:var(--text)}.lang-switch{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}.lang-switch button{border:0;background:transparent;color:var(--muted);font:600 10px var(--mono);padding:6px 8px}.lang-switch .active{background:var(--amber);color:#17120a}.cv-btn{border:1px solid var(--amber);border-radius:8px;padding:8px 11px;color:var(--amber)!important}.nav-right{display:flex;gap:7px}.theme-toggle,.navtoggle{width:38px;height:38px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text)}.navtoggle{display:none}.progress{position:fixed;top:71px;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--amber),var(--teal));z-index:60}
+.hero{min-height:100vh;padding:145px 0 70px;display:flex;flex-direction:column;justify-content:center}.hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:70px;align-items:center}.eyebrow{display:flex;gap:10px;align-items:center;color:var(--teal);font:500 10px var(--mono);text-transform:uppercase;letter-spacing:.13em}.eyebrow:before{content:"";width:28px;height:1px;background:var(--teal)}
+h1{font:700 clamp(60px,9vw,116px)/.88 var(--display);letter-spacing:-.075em;margin:22px 0}.accent{color:var(--amber)}.hero-role{font:600 17px var(--mono);color:var(--muted)}.hero-role b{color:var(--teal)}.hero-desc{max-width:650px;color:var(--muted);font-size:17px;margin:24px 0 0}.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:32px}.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 17px;border:1px solid var(--line);border-radius:10px;font:600 11px var(--mono);transition:.25s}.btn-primary{background:var(--amber);color:#181207;border-color:var(--amber)}.btn:hover{transform:translateY(-2px)}
+.hero-side{min-height:430px;position:relative;display:grid;place-items:center}.orb{width:min(390px,80vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38% 35%,rgba(89,197,184,.24),transparent 27%),radial-gradient(circle at 65% 65%,rgba(242,184,75,.18),transparent 30%),var(--panel);border:1px solid var(--line);position:relative;box-shadow:0 30px 90px rgba(0,0,0,.25)}.orb:before,.orb:after{content:"";position:absolute;border-radius:50%;inset:13%;border:1px dashed var(--line);animation:spin 22s linear infinite}.orb:after{inset:28%;border:1px solid color-mix(in srgb,var(--teal) 50%,transparent);animation-direction:reverse;animation-duration:15s}@keyframes spin{to{transform:rotate(360deg)}}.orb-core{position:absolute;inset:37%;display:grid;place-items:center;border-radius:50%;background:var(--bg);border:1px solid var(--amber);font:700 24px var(--mono);color:var(--amber);z-index:2}.float-card{position:absolute;background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:11px;padding:12px 14px;box-shadow:0 20px 50px rgba(0,0,0,.2);font:500 9px var(--mono);color:var(--muted);backdrop-filter:blur(12px)}.float-card b{display:block;color:var(--text);font-size:12px;margin-top:3px}.fc1{right:0;top:20px}.fc2{left:0;bottom:60px}.fc3{right:25px;bottom:0}.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-right:7px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--panel);margin-top:60px}.metric{padding:21px;border-right:1px solid var(--line)}.metric:last-child{border:0}.metric strong{display:block;font:700 27px var(--display)}.metric span{font:500 9px var(--mono);color:var(--muted)}
+section{padding:105px 0;scroll-margin-top:80px}.section-top{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:38px}.section-label{font:500 10px var(--mono);color:var(--teal);margin-bottom:8px}.section-title{font:700 clamp(34px,5vw,54px)/1 var(--display);letter-spacing:-.055em;margin:0}.section-note{max-width:390px;color:var(--muted);font-size:13px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px}.about-layout{display:grid;grid-template-columns:1.4fr .6fr;gap:18px}.about-copy{padding:32px;color:var(--muted);font-size:16px}.about-copy p{margin:0 0 18px}.about-copy b{color:var(--text)}.meta{padding:10px}.meta-row{display:flex;justify-content:space-between;gap:15px;padding:14px;border-bottom:1px solid var(--line);font:500 10px var(--mono)}.meta-row:last-child{border:0}.meta-row span:first-child{color:var(--muted)}.meta-row span:last-child{color:var(--amber);text-align:right}
+.skill-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.skill-card{padding:24px;min-height:185px;position:relative;transition:.25s}.skill-card:hover{transform:translateY(-5px);border-color:var(--amber)}.skill-num{position:absolute;right:18px;top:17px;color:var(--line);font:600 10px var(--mono)}.skill-card h3{font:600 17px var(--display);margin:0 0 18px}.skill-card h3 i{color:var(--teal);margin-right:8px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--muted);font:500 10px var(--mono);transition:.2s}.chip:hover{color:var(--amber);border-color:var(--amber)}
+.langs{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}.lang{padding:19px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.lang-top{display:flex;justify-content:space-between;font:600 10px var(--mono)}.bar{height:4px;background:var(--line);border-radius:4px;margin-top:14px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),var(--teal))}
+.journey-grid{display:grid;grid-template-columns:1fr;gap:70px}.journey-section{position:relative}.journey-section .subhead{font:600 10px var(--mono);color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:23px}.journey-section.education .subhead{color:var(--amber)}.timeline{border-left:1px solid var(--line);padding-left:27px}.event{position:relative;margin-bottom:16px;padding:0}.event:before{content:"";position:absolute;left:-33px;top:22px;width:8px;height:8px;border:2px solid var(--amber);border-radius:50%;background:var(--bg);z-index:2}.education .event:before{border-color:var(--teal)}.event-card{width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:18px 20px;color:var(--text);transition:.25s}.event-card:hover{border-color:var(--amber);transform:translateX(3px)}.event-card[aria-expanded="true"]{border-color:color-mix(in srgb,var(--amber) 65%,var(--line));box-shadow:0 18px 45px rgba(0,0,0,.12)}.event-head{display:grid;grid-template-columns:1fr auto;gap:15px;align-items:start}.event time{font:500 10px var(--mono);color:var(--muted)}.event h3{font:600 18px var(--display);margin:5px 0}.event-meta{font-size:12px;color:var(--muted);margin:0}.event-chevron{width:28px;height:28px;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;color:var(--muted);transition:.25s}.event-card[aria-expanded="true"] .event-chevron{transform:rotate(180deg);color:var(--amber);border-color:var(--amber)}.event-details{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}.event-card[aria-expanded="true"] .event-details{grid-template-rows:1fr}.event-details-inner{overflow:hidden}.event-details p{font-size:13px;line-height:1.75;color:var(--muted);padding-top:15px;margin:0;border-top:1px solid var(--line)}.event-details ul{margin:13px 0 0;padding-left:18px;color:var(--muted);font-size:13px}.event-details li{margin:5px 0}.event-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}.event-tags span{padding:5px 8px;border-radius:6px;background:var(--panel2);border:1px solid var(--line);font:500 9px var(--mono);color:var(--amber)}
+.project-tools{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.filters{display:flex;gap:7px;flex-wrap:wrap}.filter{padding:8px 11px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--muted);font:500 10px var(--mono)}.filter.active,.filter:hover{color:var(--amber);border-color:var(--amber)}.project-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.project{overflow:hidden;display:flex;flex-direction:column;transition:.3s}.project.hidden{display:none}.project:hover{transform:translateY(-6px);box-shadow:0 25px 70px rgba(0,0,0,.2)}.project-media{height:185px;background:var(--panel2);overflow:hidden;position:relative}.project-media img{width:100%;height:100%;object-fit:cover;display:block;transition:.5s}.project:hover img{transform:scale(1.05)}.project-overlay{position:absolute;inset:auto 0 0;padding:13px;display:flex;justify-content:space-between;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;font:500 9px var(--mono)}.project-body{padding:22px;display:flex;flex-direction:column;flex:1}.project-meta{display:flex;justify-content:space-between;color:var(--muted);font:500 9px var(--mono);margin-bottom:10px}.project h3{font:600 20px var(--display);margin:0 0 10px}.project p{font-size:12.5px;color:var(--muted);margin:0 0 17px;flex:1}.stack{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}.stack span{padding:4px 7px;border-radius:5px;background:rgba(242,184,75,.08);color:var(--amber);font:500 9px var(--mono)}.project-links{display:flex;gap:13px;flex-wrap:wrap;font:600 10px var(--mono)}.project-links a{color:var(--teal)}.project-links a:hover{color:var(--amber)}
+.certs{display:grid;grid-template-columns:1fr 1fr;gap:16px}.cert{display:grid;grid-template-columns:145px 1fr;overflow:hidden;min-height:180px}.cert-img{background:var(--panel2);overflow:hidden}.cert-img img{width:100%;height:100%;object-fit:cover;transition:.4s}.cert:hover img{transform:scale(1.06)}.cert-body{padding:20px}.cert-source{display:block;color:var(--teal);font:500 9px var(--mono);text-transform:uppercase}.cert-date{display:block;color:var(--muted);font:500 9px var(--mono);margin:5px 0}.cert h3{font:600 17px var(--display);margin:7px 0}.cert p{font-size:11.5px;color:var(--muted);margin:0 0 12px}.cert-links{display:flex;gap:13px;font:600 9px var(--mono);color:var(--amber)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.contact-hero{padding:38px}.contact-hero h3{font:700 clamp(37px,5vw,58px)/.98 var(--display);letter-spacing:-.055em;margin:16px 0}.contact-hero p{max-width:460px;color:var(--muted);font-size:14px}.contact-links{padding:10px}.contact-link{display:flex;align-items:center;gap:13px;padding:15px;border-bottom:1px solid var(--line);font:500 10px var(--mono);transition:.2s}.contact-link:last-child{border:0}.contact-link i{width:17px;text-align:center;color:var(--amber)}.contact-link span{margin-left:auto;color:var(--muted)}.contact-link:hover{background:var(--panel2);color:var(--amber)}
+footer{border-top:1px solid var(--line);padding:26px 0;display:flex;justify-content:space-between;color:var(--muted);font:500 9px var(--mono)}footer button{border:0;background:none;color:inherit;padding:0}
+.reveal{opacity:0;transform:translateY(24px);transition:.7s}.reveal.visible{opacity:1;transform:none}.modal,.command{position:fixed;inset:0;z-index:100;display:none;background:rgba(0,0,0,.75);backdrop-filter:blur(12px);place-items:center;padding:20px}.modal.open,.command.open{display:grid}.modal-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px}.modal-img{width:100%;max-height:420px;object-fit:cover}.modal-content{padding:25px}.modal-close{float:right;width:34px;height:34px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--text);font-size:20px}.modal h3{font:700 28px var(--display);margin:5px 0}.modal p{color:var(--muted);font-size:13px}.command{align-items:start;padding-top:15vh}.command-box{width:min(560px,100%);background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}.command input{width:100%;padding:16px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--text);outline:0;font:500 12px var(--mono)}.command-items a{display:flex;justify-content:space-between;padding:12px 16px;color:var(--muted);font:500 10px var(--mono)}.command-items a:hover{background:var(--panel2);color:var(--text)}
+.toast{position:fixed;right:18px;bottom:18px;background:var(--panel);border:1px solid var(--teal);padding:11px 14px;border-radius:9px;font:500 10px var(--mono);opacity:0;transform:translateY(15px);transition:.3s;z-index:130}.toast.show{opacity:1;transform:none}
+@media(max-width:900px){.hero-grid,.about-layout,.journey-grid,.contact-grid{grid-template-columns:1fr}.hero-side{min-height:380px}.project-grid{grid-template-columns:1fr 1fr}.certs{grid-template-columns:1fr}}
+@media(max-width:720px){.wrap{width:calc(100% - 28px)}nav{width:calc(100% - 28px)}.navlinks{display:none;position:absolute;top:72px;left:14px;right:14px;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:10px;flex-direction:column;align-items:stretch;gap:3px;box-shadow:0 20px 60px rgba(0,0,0,.3)}.navlinks.open{display:flex}.navlinks>a{padding:10px}.navtoggle{display:block}.hero{padding-top:120px}h1{font-size:clamp(55px,16vw,88px)}.metrics{grid-template-columns:1fr 1fr}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.skill-layout,.project-grid,.langs{grid-template-columns:1fr}.cert{grid-template-columns:105px 1fr}.section-top{display:block}.section-note{margin-top:13px}footer{display:block;text-align:center}footer span{display:block;margin-top:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+</style></head><body>
+<header><nav><a href="#" class="logo" id="logoHome">haJy<span>.dev</span></a>
+<div class="navlinks" id="navLinks"><a href="#about" data-i18n="nav.about">Haqqımda</a><a href="#skills" data-i18n="nav.skills">Bacarıqlar</a><a href="#experience" data-i18n="nav.experience">Təcrübə</a><a href="#education" data-i18n="nav.education">Təhsil</a><a href="#projects" data-i18n="nav.projects">Layihələr</a><a href="#certificates" data-i18n="nav.certificates">Sertifikatlar</a><a href="#contact" data-i18n="nav.contact">Əlaqə</a><div class="lang-switch" id="langSwitch"><button data-lang="az" class="active">AZ</button><button data-lang="en">EN</button><button data-lang="ru">RU</button></div><a href="Haci_Axundzade_CV.pdf" download id="cvLink" class="cv-btn" data-i18n="nav.cv">CV yüklə</a></div>
+<div class="nav-right"><button class="theme-toggle" id="themeToggle">☾</button><button class="navtoggle" id="navToggle">☰</button></div></nav></header><div class="progress" id="progress"></div>
 <main class="wrap">
-
-  <!-- HERO -->
-  <section class="hero" style="border-top:none;padding-top:70px;">
-    <div class="hero-grid">
-      <div>
-        <div class="cell-tag" data-i18n="hero.tag">In [1]: profile.load()</div>
-        <h1 data-i18n="hero.title">Hacı Axundzadə</h1>
-        <div class="role-line" data-i18n="hero.role">Data Scientist <span class="tealtxt">·</span> Bakı, Azərbaycan <span class="tealtxt">·</span> Python / SQL / ML / DL</div>
-        <p class="hero-desc" data-i18n="hero.desc">Azərbaycan Dövlət Neft və Sənaye Universitetində Kompüter mühəndisliyi üzrə bakalavr, Azərbaycan-Fransız Universitetində (UFAZ) isə Data Science and Artificial Intelligence üzrə magistr təhsili almışam.</p>
-        <div class="hero-cta">
-          <a href="#projects" class="btn btn-primary" data-i18n="hero.cta1">Layihələrə bax →</a>
-          <a href="#contact" class="btn btn-ghost" data-i18n="hero.cta2">Əlaqə saxla</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="term-box">
-      <div class="term-head">
-        <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
-        <span class="term-title">hacı@portfolio: ~</span>
-      </div>
-      <div class="term-body">
-        <div class="term-line"><span class="prompt">$</span> <span class="cmd">whoami</span></div>
-        <div class="term-line"><span class="out-key">name</span> → <span class="out-val" data-i18n="hero.term.name">Hacı Axundzadə</span></div>
-        <div class="term-line"><span class="out-key">role</span> → <span class="out-val" data-i18n="hero.term.role">Data Scientist, MSc @ UFAZ</span></div>
-        <div class="term-line"><span class="out-key">stack</span> → <span class="out-val">Python · SQL · ML/DL · React</span></div>
-        <div class="term-line"><span class="out-key">location</span> → <span class="out-val" data-i18n="hero.term.location">Bakı, Azərbaycan</span><span class="term-cursor"></span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="sec-head"><span class="in-tag">In [2]:</span><h2 class="sec-title" data-i18n="about.title">Haqqımda</h2></div>
-    <div class="about-grid">
-      <div>
-        <p data-i18n="about.p1">Salam! Mən <b>Hacı</b> — Azərbaycan-Fransız Universitetinin (UFAZ) Data Science and Artificial Intelligence ixtisası üzrə magistr məzunuyam. <b>Python, SQL, Machine Learning və Deep Learning</b> sahələrində nəzəri və praktiki biliklərə malikəm, həmçinin Pandas və NumPy kitabxanaları ilə məlumatların analizi və emalı üzrə təcrübəm var.</p>
-        <p data-i18n="about.p2">Bundan əlavə, <b>React, Java və Spring Boot</b> texnologiyalarından istifadə edərək veb tətbiqlərin hazırlanması üzrə bacarıqlara sahibəm və data yönümlü problemlərin həllində biliklərimi inkişaf etdirməyə davam edirəm.</p>
-      </div>
-      <div class="meta-list">
-        <div><span data-i18n="about.meta.role">rol</span><span data-i18n="about.meta.roleval">Data Scientist</span></div>
-        <div><span data-i18n="about.meta.loc">yer</span><span>Bakı, AZ</span></div>
-        <div><span data-i18n="about.meta.edu">təhsil</span><span>UFAZ, MSc DSAI</span></div>
-        <div><span>github</span><span>@haJye</span></div>
-        <div><span data-i18n="about.meta.status">status</span><span data-i18n="about.meta.statusval">açıq / open to work</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="sec-head"><span class="in-tag">In [3]:</span><h2 class="sec-title" data-i18n="skills.title">Bacarıqlar</h2></div>
-    <div class="skill-groups">
-      <div class="skill-card">
-        <h4><i class="fa-solid fa-brain"></i> Data & ML</h4>
-        <div class="chips">
-          <span class="chip"><i class="fa-brands fa-python"></i>Python</span><span class="chip"><i class="fa-brands fa-r-project"></i>R</span><span class="chip"><i class="fa-solid fa-database"></i>SQL</span><span class="chip"><i class="fa-solid fa-flask"></i>Scikit-learn</span><span class="chip"><i class="fa-solid fa-table"></i>Pandas</span><span class="chip"><i class="fa-solid fa-square-root-variable"></i>NumPy</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <h4><i class="fa-solid fa-server"></i> Backend</h4>
-        <div class="chips">
-          <span class="chip"><i class="fa-brands fa-java"></i>Java</span><span class="chip"><i class="fa-solid fa-leaf"></i>Spring</span><span class="chip"><i class="fa-brands fa-node-js"></i>Node.js</span><span class="chip"><i class="fa-solid fa-hashtag"></i>C#</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <h4><i class="fa-solid fa-display"></i> Frontend</h4>
-        <div class="chips">
-          <span class="chip"><i class="fa-brands fa-js"></i>JavaScript</span><span class="chip"><i class="fa-brands fa-react"></i>React</span><span class="chip"><i class="fa-brands fa-html5"></i>HTML5 & CSS3</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <h4><i class="fa-solid fa-toolbox"></i> <span data-i18n="skills.tools">Alətlər</span></h4>
-        <div class="chips">
-          <span class="chip"><i class="fa-brands fa-git-alt"></i>Git / Version Control</span><span class="chip"><i class="fa-solid fa-code"></i>C / C++</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- LANGUAGES -->
-  <section id="languages">
-    <div class="sec-head"><span class="in-tag">In [4]:</span><h2 class="sec-title" data-i18n="skills.langs">Dillər</h2></div>
-    <div class="skill-card">
-      <div class="chips" data-i18n="skills.langs.val">
-        <span class="chip">Azərbaycan — ana dili</span><span class="chip">İngilis — yaxşı</span><span class="chip">Rus — başlanğıc</span><span class="chip">Fransız — başlanğıc</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- EXPERIENCE -->
-  <section id="experience">
-    <div class="exp-edu-grid">
-      <div>
-        <div class="sec-head"><span class="in-tag">In [5]:</span><h2 class="sec-title" data-i18n="exp.work">Təcrübə</h2></div>
-        <div class="log">
-          <div class="log-item">
-            <div class="log-time">08/2024 – 09/2024</div>
-            <div class="log-title" data-i18n="exp.job1.title">B2C Menecer — TEZİSH Startup</div>
-            <div class="log-desc" data-i18n="exp.job1.desc">Komanda ilə birlikdə həftəlik fəaliyyət planları hazırlamış, biznes proseslərinin planlı və səmərəli şəkildə idarə olunmasına töhfə vermişəm. Tapşırıqların icrasını izləyərək işlərin vaxtında tamamlanmasına və prioritetlərin düzgün müəyyənləşdirilməsinə dəstək vermişəm.</div>
-          </div>
-          <div class="log-item">
-            <div class="log-time">05/2024 – 07/2024</div>
-            <div class="log-title" data-i18n="exp.job2.title">Layihələr üzrə koordinator — NEV Telecom MMC</div>
-            <div class="log-desc" data-i18n="exp.job2.desc">GIS əsaslı xəritələrin hazırlanması və xəritələndirmə məlumatlarının təhlili ilə məşğul olmuşam. Məlumatlardakı uyğunsuzluqları müəyyən edib aradan qaldırılmasına dəstək vermiş, məkan məlumatlarının emalı və vizuallaşdırılması prosesində iştirak etmişəm.</div>
-          </div>
-          <div class="log-item">
-            <div class="log-time">02/2023 – 07/2023</div>
-            <div class="log-title" data-i18n="exp.job3.title">İstehsalat təcrübəsi — Azərbaycan Milli Aerokosmik Agentliyi</div>
-            <div class="log-desc" data-i18n="exp.job3.desc">Tədqiqat nəticələri əsasında texniki hesabatlar və təqdimatlar hazırlamışam. Məlumatları təhlil edərək nəticələrin dəqiq və sistemli şəkildə təqdim olunmasına diqqət yetirmişəm.</div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="sec-head"><span class="in-tag">In [6]:</span><h2 class="sec-title" data-i18n="exp.edu">Təhsil</h2></div>
-        <div class="log">
-          <div class="log-item edu">
-            <div class="log-time">09/2023 – 07/2025</div>
-            <div class="log-title" data-i18n="exp.edu1.title">Magistr, Data Science and AI</div>
-            <div class="log-desc">Azərbaycan-Fransız Universiteti (UFAZ)<br><span data-i18n="exp.edu1.gpa">ÜOMG: 12.158/20</span></div>
-          </div>
-          <div class="log-item edu">
-            <div class="log-time">09/2019 – 07/2023</div>
-            <div class="log-title" data-i18n="exp.edu2.title">Bakalavr, Kompüter mühəndisliyi</div>
-            <div class="log-desc">Azərbaycan Dövlət Neft və Sənaye Universiteti<br><span data-i18n="exp.edu2.gpa">ÜOMG: 91.9/100</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="sec-head"><span class="in-tag">In [7]:</span><h2 class="sec-title" data-i18n="projects.title">Layihələr</h2></div>
-    <div class="proj-grid">
-
-      <div class="proj-card">
-        <div class="proj-media">
-          <img src="https://raw.githubusercontent.com/haJye/DSAI/main/M2DSAI/Dissertation/Peek%202026-07-21%2023-05.gif" alt="McDonald's Menu Recommender demo" loading="lazy">
-        </div>
-        <div class="proj-top"><span>Out [5.1]</span><span data-i18n="proj.tag1">Dissertasiya</span></div>
-        <div class="proj-body">
-          <h3>AI-Based Menu Recommendations</h3>
-          <div class="stack-row"><span>Python</span><span>Gradio</span><span>scikit-learn</span></div>
-          <p data-i18n="proj.p1">UFAZ-da Data Science and AI magistr proqramının yekun dissertasiya işi — restoran menyusu üçün süni intellekt əsaslı tövsiyə sistemi. Qısa təsviri buraya əlavə edin — istifadə olunan model/metod və əldə olunan nəticələr.</p>
-          <div class="proj-links">
-            <a href="https://colab.research.google.com/drive/1hIEgFc9TwxFPEsNiYYYR_i71ggkPMJCo#scrollTo=lLpld0ctfAxi" target="_blank" data-i18n="proj.code">Code (Colab) →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-media">
-          <img src="https://raw.githubusercontent.com/haJye/DSAI/main/M2DSAI/ImageSynthesis/Project/Gif.gif" alt="Solar System Simulation demo" loading="lazy">
-        </div>
-        <div class="proj-top"><span>Out [5.2]</span><span>M2 DSAI</span></div>
-        <div class="proj-body">
-          <h3>Solar System Simulation</h3>
-          <div class="stack-row"><span>Python</span><span>Pygame</span><span>OpenGL</span></div>
-          <p data-i18n="proj.p2">Pygame və OpenGL ilə hazırlanmış interaktiv Günəş Sistemi simulyasiyası — səma cisimlərinin mərkəzi ulduz ətrafında orbital hərəkətini tənzimlənə bilən fizika və rendering ilə vizuallaşdırır.</p>
-          <div class="proj-links">
-            <a href="https://github.com/haJye/DSAI/tree/main/M2DSAI/ImageSynthesis/Project" target="_blank" data-i18n="proj.github">GitHub →</a>
-            <a href="https://raw.githubusercontent.com/haJye/DSAI/main/M2DSAI/ImageSynthesis/Project/Demo.mp4" target="_blank" data-i18n="proj.video">Video Demo →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-top"><span>Google Colab</span><span data-i18n="proj.tag3">Dissertasiya</span></div>
-        <div class="proj-body">
-          <h3>MovieLens Recommender System</h3>
-          <div class="stack-row"><span>Python</span><span>Pandas</span><span>Scikit-learn</span></div>
-          <p data-i18n="proj.p3">MovieLens verilənlər bazası üzərində qurulmuş film tövsiyə sistemi — istifadəçi reytinqlərinə əsaslanan content-based və collaborative filtering yanaşmaları ilə hazırlanıb.</p>
-          <div class="proj-links">
-            <a href="https://colab.research.google.com/drive/1QIg_9L1jOvs4PeismmUl_JO6FLci-MKB?usp=sharing" target="_blank" data-i18n="proj.github3">Code (Colab) →</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- CERTIFICATES -->
-  <section id="certificates">
-    <div class="sec-head"><span class="in-tag">In [8]:</span><h2 class="sec-title" data-i18n="certs.title">Sertifikatlar</h2></div>
-    <div class="proj-grid" id="certGrid">
-      <div class="proj-card">
-        <div class="proj-media">
-          <img src="certificates/cert-frontend-developer.jpg" alt="Frontend-Developer Certificate" loading="lazy">
-        </div>
-        <div class="proj-top"><span>Algorithmics</span><span>10.06.2022</span></div>
-        <div class="proj-body">
-          <h3 data-i18n="cert1.title">Frontend-Developer Kursu</h3>
-          <div class="stack-row"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>React</span><span>Node.js</span><span>MySQL</span><span>Git</span></div>
-          <p data-i18n="cert1.desc">Azərbaycan Respublikası Təhsil Nazirliyi və Algorithmics tərəfindən təsdiqlənmiş, 256 saatlıq frontend-developer proqramı. #CodeForFuture layihəsi çərçivəsində tamamlanıb.</p>
-          <div class="proj-links">
-            <a href="certificates/cert-frontend-developer.jpg" target="_blank" data-i18n="cert.view">Sertifikata bax →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-media">
-          <img src="certificates/cert-qss-internship.jpg" alt="QSS Analytics Data Science Internship Certificate" loading="lazy">
-        </div>
-        <div class="proj-top"><span>QSS Analytics</span><span>03.05.2025</span></div>
-        <div class="proj-body">
-          <h3 data-i18n="cert2.title">Data Science Təcrübəsi (Internship)</h3>
-          <div class="stack-row"><span>Python</span><span>Machine Learning</span><span>Deep Learning</span><span>Big Data</span></div>
-          <p data-i18n="cert2.desc">QSS Analytics-də 3 aylıq Data Science təcrübə proqramı — Python for Data Science, Machine Learning with Python, Deep Learning with Python və Introduction to Big Data modullarını uğurla tamamladım.</p>
-          <div class="proj-links">
-            <a href="certificates/cert-qss-internship.pdf" target="_blank" data-i18n="cert.view">Sertifikata bax →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-media">
-          <img src="certificates/cert-sql-ibm.jpg" alt="IBM Databases and SQL for Data Science Certificate" loading="lazy">
-        </div>
-        <div class="proj-top"><span>IBM · Coursera</span><span>18.04.2024</span></div>
-        <div class="proj-body">
-          <h3 data-i18n="cert3.title">Databases and SQL for Data Science with Python</h3>
-          <div class="stack-row"><span>SQL</span><span>Python</span><span>Databases</span></div>
-          <p data-i18n="cert3.desc">IBM tərəfindən hazırlanmış və Coursera vasitəsilə təqdim olunan kurs — verilənlər bazaları və SQL-in Python ilə data science kontekstində istifadəsi.</p>
-          <div class="proj-links">
-            <a href="certificates/cert-sql-ibm.pdf" target="_blank" data-i18n="cert.view">Sertifikata bax →</a>
-            <a href="https://coursera.org/share/57c5297ad86ecd752f3276bd4b26b512" target="_blank" data-i18n="cert.coursera">Coursera →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-media">
-          <img src="certificates/cert-python-coursera.jpg" alt="Programming for Everybody Certificate" loading="lazy">
-        </div>
-        <div class="proj-top"><span>University of Michigan · Coursera</span><span>28.02.2021</span></div>
-        <div class="proj-body">
-          <h3 data-i18n="cert4.title">Programming for Everybody (Getting Started with Python)</h3>
-          <div class="stack-row"><span>Python</span></div>
-          <p data-i18n="cert4.desc">Python proqramlaşdırma dilinin əsaslarına giriş kursu — dəyişənlər, funksiyalar və əsas proqramlaşdırma məntiqi.</p>
-          <div class="proj-links">
-            <a href="certificates/cert-python-coursera.pdf" target="_blank" data-i18n="cert.view">Sertifikata bax →</a>
-            <a href="https://coursera.org/share/45c22156d521e0688b68d2243abb0e99" target="_blank" data-i18n="cert.coursera">Coursera →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="sec-head"><span class="in-tag">In [9]:</span><h2 class="sec-title" data-i18n="contact.title">Əlaqə</h2></div>
-    <div class="contact-wrap contact-wrap-single">
-      <div class="contact-links">
-        <a href="mailto:akhundzadahaji@gmail.com"><i class="fa-solid fa-envelope"></i><span>Email</span><span>akhundzadahaji@gmail.com</span></a>
-        <a href="https://wa.me/994516520070?text=Salam%2C%20portfolionuzu%20g%C3%B6rd%C3%BCm%2C%20sizinl%C9%99%20%C9%99laq%C9%99%20saxlamaq%20ist%C9%99yir%C9%99m." id="waLink" target="_blank"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span><span>+994 51 652 00 70</span></a>
-        <a href="tel:+994516520070"><i class="fa-solid fa-phone"></i><span data-i18n="contact.phone">Telefon</span><span>+994 51 652 00 70</span></a>
-        <a href="https://github.com/haJye" target="_blank"><i class="fa-brands fa-github"></i><span>GitHub</span><span>@haJye</span></a>
-        <a href="https://www.linkedin.com/in/hajy/" target="_blank"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span><span>in/hajy</span></a>
-        <a href="https://www.instagram.com/hajyakh/" target="_blank"><i class="fa-brands fa-instagram"></i><span>Instagram</span><span>@hajyakh</span></a>
-        <a href="https://www.facebook.com/akhundzada.hajy" target="_blank"><i class="fa-brands fa-facebook"></i><span>Facebook</span><span>akhundzada.hajy</span></a>
-        <a href="https://www.hackerrank.com/axundzade02" target="_blank"><i class="fa-brands fa-hackerrank"></i><span>HackerRank</span><span>axundzade02</span></a>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<footer>© <span id="footerYear">2026</span> <span data-i18n="hero.term.name">Hacı Axundzadə</span></footer>
-
-<script>
-/* ================= FOOTER YEAR ================= */
-(function(){
-  const y = document.getElementById('footerYear');
-  if(y){ y.textContent = new Date().getFullYear(); }
-})();
-
-/* ================= THEME (dark/light) ================= */
-(function(){
-  const stored = localStorage.getItem('theme');
-  const initial = stored || 'dark';
-  document.documentElement.setAttribute('data-theme', initial);
-  const btn = document.getElementById('themeToggle');
-  function updateIcon(){
-    btn.textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '☀️' : '🌙';
-  }
-  updateIcon();
-  btn.addEventListener('click', function(){
-    const cur = document.documentElement.getAttribute('data-theme');
-    const next = cur === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    updateIcon();
-  });
-})();
-
-/* ================= I18N (AZ / EN / RU) ================= */
-const translations = {
+<section class="hero"><div class="hero-grid"><div class="reveal"><div class="eyebrow" data-i18n="hero.tag">In [1]: profile.load()</div><h1>Hacı <span class="accent">Axundzadə</span></h1><div class="hero-role">Data Scientist <b>·</b> MSc @ UFAZ <b>·</b> Python / SQL / ML / DL</div><p class="hero-desc" data-i18n="hero.desc">UFAZ-da Data Science and Artificial Intelligence üzrə magistr məzunuyam, tətbiqi maşın öyrənməsi və tövsiyə sistemləri üzərində ixtisaslaşmışam. Python (Pandas, Scikit-learn, Gradio) istifadə edərək kontent-əsaslı tövsiyə sistemi qurmuşam və Data Science təcrübəsi çərçivəsində machine learning, deep learning və big data əsaslarını mənimsəmişəm. SQL əsaslı data idarəetmədən React, Java və Spring Boot ilə veb interfeyslərin hazırlanmasına qədər bütün data pipeline-da rahat işləyirəm.</p><div class="hero-actions"><a href="#projects" class="btn btn-primary" data-i18n="hero.cta1">Layihələrə bax →</a><a href="#contact" class="btn" data-i18n="hero.cta2">Əlaqə saxla</a><button class="btn" id="commandBtn"><i class="fa-solid fa-terminal"></i> ⌘ K</button></div></div>
+<div class="hero-side reveal"><div class="orb"><div class="orb-core">HA</div></div><div class="float-card fc1"><span class="status-dot"></span>STATUS<b data-i18n="about.meta.statusval">açıq / open to work</b></div><div class="float-card fc2">FOCUS<b>Data · ML · AI</b></div><div class="float-card fc3">LOCATION<b data-i18n="hero.term.location">Bakı, Azərbaycan</b></div></div></div>
+<div class="metrics reveal"><div class="metric"><strong>01</strong><span>DATA SCIENTIST</span></div><div class="metric"><strong>MSc</strong><span>DSAI · UFAZ</span></div><div class="metric"><strong>03</strong><span>FEATURED PROJECTS</span></div><div class="metric"><strong>04</strong><span>CERTIFICATES</span></div></div></section>
+<section id="about" class="reveal"><div class="section-top"><div><div class="section-label">01 / PROFILE</div><h2 class="section-title" data-i18n="about.title">Haqqımda</h2></div><p class="section-note">A data-first profile with an engineering background.</p></div><div class="about-layout"><div class="panel about-copy"><p data-i18n="about.p1">Salam! Mən <b>Hacı</b> — UFAZ-da Data Science and Artificial Intelligence üzrə magistr məzunuyam və tətbiqi maşın öyrənməsi, xüsusilə tövsiyə sistemləri üzərində işləyirəm. <b>Python, Pandas, Scikit-learn və Gradio</b> ilə data hazırlama, model qurma və interaktiv ML interfeysləri hazırlama təcrübəm var.</p><p data-i18n="about.p2">Magistr layihəmdə 8 kateqoriyaya bölünmüş 167 məhsuldan ibarət restoran menyusu üzərində kontent-əsaslı tövsiyə mühərriki qurmuşam; sistem kalori və allergiya həssaslığını nəzərə alan interaktiv Gradio interfeysi ilə tamamlanıb. MovieLens məlumatları üzərində isə content-based və collaborative filtering yanaşmalarını tətbiq edərək fərdiləşdirilmiş film tövsiyələri yaratmışam. Bununla yanaşı, SQL əsaslı data idarəetməsi və React, Java, Spring Boot ilə veb interfeyslərin hazırlanması üzrə də işləyə bilirəm.</p></div><div class="panel meta"><div class="meta-row"><span data-i18n="about.meta.role">rol</span><span data-i18n="about.meta.roleval">Data Scientist</span></div><div class="meta-row"><span data-i18n="about.meta.loc">yer</span><span>Bakı, AZ</span></div><div class="meta-row"><span data-i18n="about.meta.edu">təhsil</span><span>UFAZ, MSc DSAI</span></div><div class="meta-row"><span>github</span><span>@haJye</span></div><div class="meta-row"><span data-i18n="about.meta.status">status</span><span data-i18n="about.meta.statusval">açıq / open to work</span></div></div></div></section>
+<section id="skills" class="reveal"><div class="section-top"><div><div class="section-label">02 / TOOLKIT</div><h2 class="section-title" data-i18n="skills.title">Bacarıqlar</h2></div><p class="section-note">The tools I use to move from raw data to working products.</p></div><div class="skill-layout">
+<div class="panel skill-card"><span class="skill-num">01</span><h3><i class="fa-solid fa-brain"></i>Data & ML</h3><div class="chips"><span class="chip">Python</span><span class="chip">R</span><span class="chip">SQL</span><span class="chip">Scikit-learn</span><span class="chip">Pandas</span><span class="chip">NumPy</span></div></div>
+<div class="panel skill-card"><span class="skill-num">02</span><h3><i class="fa-solid fa-server"></i>Backend</h3><div class="chips"><span class="chip">Java</span><span class="chip">Spring</span><span class="chip">Node.js</span><span class="chip">C#</span></div></div>
+<div class="panel skill-card"><span class="skill-num">03</span><h3><i class="fa-solid fa-display"></i>Frontend</h3><div class="chips"><span class="chip">JavaScript</span><span class="chip">React</span><span class="chip">HTML5 & CSS3</span></div></div>
+<div class="panel skill-card"><span class="skill-num">04</span><h3><i class="fa-solid fa-toolbox"></i><span data-i18n="skills.tools">Alətlər</span></h3><div class="chips"><span class="chip">Git / Version Control</span><span class="chip">C / C++</span></div></div></div></section>
+<section id="languages" class="reveal"><div class="section-top"><div><div class="section-label">03 / LANGUAGES</div><h2 class="section-title" data-i18n="skills.langs">Dillər</h2></div></div><div class="langs"><div class="lang"><div class="lang-top"><span>Azərbaycan</span><span>Native</span></div><div class="bar"><i style="width:100%"></i></div></div><div class="lang"><div class="lang-top"><span>İngilis</span><span>Good</span></div><div class="bar"><i style="width:78%"></i></div></div><div class="lang"><div class="lang-top"><span>Rus</span><span>Beginner</span></div><div class="bar"><i style="width:35%"></i></div></div><div class="lang"><div class="lang-top"><span>Fransız</span><span>Beginner</span></div><div class="bar"><i style="width:30%"></i></div></div></div></section>
+<section id="experience" class="reveal"><div class="section-top"><div><div class="section-label">04 / EXPERIENCE</div><h2 class="section-title" data-i18n="exp.title">Təcrübə</h2></div><p class="section-note" data-i18n="exp.note">Hər təcrübə kartına klik edərək rol, məsuliyyət və gördüyüm işlərin daha geniş təsvirini oxuya bilərsən.</p></div><div class="journey-section"><div class="subhead" data-i18n="exp.work">İş təcrübəsi</div><div class="timeline">
+<div class="event"><button class="event-card" aria-expanded="false" type="button"><div class="event-head"><div><time>08/2024 – 09/2024</time><h3 data-i18n="exp.job1.title">B2C Menecer — TEZİSH Startup</h3><p class="event-meta">TEZİSH Startup</p></div><span class="event-chevron">⌄</span></div><div class="event-details"><div class="event-details-inner"><p data-i18n="exp.job1.desc">Komanda ilə birlikdə həftəlik fəaliyyət planları hazırlamış, biznes proseslərinin planlı və səmərəli şəkildə idarə olunmasına töhfə vermişəm. Tapşırıqların icrasını izləyərək işlərin vaxtında tamamlanmasına və prioritetlərin düzgün müəyyənləşdirilməsinə dəstək vermişəm.</p><div class="event-tags"><span>Planning</span><span>Coordination</span><span>Operations</span></div></div></div></button></div>
+<div class="event"><button class="event-card" aria-expanded="false" type="button"><div class="event-head"><div><time>05/2024 – 07/2024</time><h3 data-i18n="exp.job2.title">Layihələr üzrə koordinator — NEV Telecom MMC</h3><p class="event-meta">NEV Telecom MMC</p></div><span class="event-chevron">⌄</span></div><div class="event-details"><div class="event-details-inner"><p data-i18n="exp.job2.desc">GIS əsaslı xəritələrin hazırlanması və xəritələndirmə məlumatlarının təhlili ilə məşğul olmuşam. Məlumatlardakı uyğunsuzluqları müəyyən edib aradan qaldırılmasına dəstək vermiş, məkan məlumatlarının emalı və vizuallaşdırılması prosesində iştirak etmişəm.</p><div class="event-tags"><span>GIS</span><span>Data Analysis</span><span>Visualization</span></div></div></div></button></div>
+<div class="event"><button class="event-card" aria-expanded="false" type="button"><div class="event-head"><div><time>02/2023 – 07/2023</time><h3 data-i18n="exp.job3.title">İstehsalat təcrübəsi — Azərbaycan Milli Aerokosmik Agentliyi</h3><p class="event-meta">Azərbaycan Milli Aerokosmik Agentliyi</p></div><span class="event-chevron">⌄</span></div><div class="event-details"><div class="event-details-inner"><p data-i18n="exp.job3.desc">Tədqiqat nəticələri əsasında texniki hesabatlar və təqdimatlar hazırlamışam. Məlumatları təhlil edərək nəticələrin dəqiq və sistemli şəkildə təqdim olunmasına diqqət yetirmişəm.</p><div class="event-tags"><span>Research</span><span>Reporting</span><span>Analysis</span></div></div></div></button></div>
+</div></div></section>
+<section id="education" class="reveal"><div class="section-top"><div><div class="section-label">05 / EDUCATION</div><h2 class="section-title" data-i18n="exp.edu">Təhsil</h2></div><p class="section-note" data-i18n="edu.note">Təhsil mərhələlərini də klikləyərək proqram, istiqamət və praktiki işlər haqqında daha ətraflı məlumatı aça bilərsən.</p></div><div class="journey-section education"><div class="timeline">
+<div class="event"><button class="event-card" aria-expanded="false" type="button"><div class="event-head"><div><time>09/2023 – 07/2025</time><h3 data-i18n="exp.edu1.title">Magistr, Data Science and AI</h3><p class="event-meta">Azərbaycan-Fransız Universiteti (UFAZ) · <span data-i18n="exp.edu1.gpa">ÜOMG: 12.158/20</span></p></div><span class="event-chevron">⌄</span></div><div class="event-details"><div class="event-details-inner"><p data-i18n="edu.ufaz.desc">UFAZ-da Data Science and Artificial Intelligence üzrə magistr təhsili müddətində tətbiqi maşın öyrənməsi və tövsiyə sistemlərinə fokuslanmışam. Python (Pandas, Scikit-learn, Gradio) ilə 8 kateqoriyaya bölünmüş 167 məhsuldan ibarət restoran menyusu üzərində kontent-əsaslı tövsiyə mühərriki qurmuş, kalori və allergiya həssaslığını nəzərə alan interaktiv Gradio interfeysi hazırlamışam. MovieLens reytinq verilənləri üzərində content-based və collaborative filtering yanaşmalarını tətbiq edərək fərdiləşdirilmiş film tövsiyələri yaratmışam. Təhsil çərçivəsində machine learning, deep learning və big data əsasları ilə yanaşı SQL əsaslı data idarəetməsi və data pipeline-ın müxtəlif mərhələləri üzrə praktiki biliklər əldə etmişəm.</p><div class="event-tags"><span>Python</span><span>Pandas</span><span>Scikit-learn</span><span>Gradio</span><span>Machine Learning</span><span>Recommendation Systems</span><span>SQL</span></div></div></div></button></div>
+<div class="event"><button class="event-card" aria-expanded="false" type="button"><div class="event-head"><div><time>09/2019 – 07/2023</time><h3 data-i18n="exp.edu2.title">Bakalavr, Kompüter mühəndisliyi</h3><p class="event-meta">Azərbaycan Dövlət Neft və Sənaye Universiteti · <span data-i18n="exp.edu2.gpa">ÜOMG: 91.9/100</span></p></div><span class="event-chevron">⌄</span></div><div class="event-details"><div class="event-details-inner"><p data-i18n="edu.bsc.desc">Azərbaycan Dövlət Neft və Sənaye Universitetində Kompüter mühəndisliyi üzrə bakalavr təhsili almışam. Bu mərhələ proqramlaşdırma, kompüter elmləri və mühəndislik yanaşmaları üzrə texniki bazamın formalaşmasına əsas yaradıb.</p><div class="event-tags"><span>Computer Engineering</span><span>Programming</span><span>Software</span></div></div></div></button></div>
+</div></div></section>
+<section id="projects" class="reveal"><div class="section-top"><div><div class="section-label">05 / SELECTED WORK</div><h2 class="section-title" data-i18n="projects.title">Layihələr</h2></div><p class="section-note">Explore the work instead of just reading about it.</p></div>
+<div class="project-tools"><div class="filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="data">Data / ML</button><button class="filter" data-filter="simulation">Simulation</button></div><span style="font:500 9px var(--mono);color:var(--muted)">03 PROJECTS</span></div><div class="project-grid">
+<article class="panel project" data-category="data"><div class="project-media"><img src="https://raw.githubusercontent.com/haJye/DSAI/main/M2DSAI/Dissertation/Peek%202026-07-21%2023-05.gif" alt="AI-Based Menu Recommendations" loading="lazy"><div class="project-overlay"><span>OUT [5.1]</span><span>CASE STUDY ↗</span></div></div><div class="project-body"><div class="project-meta"><span data-i18n="proj.tag1">Dissertasiya</span><span>01 / 03</span></div><h3>AI-Based Menu Recommendations</h3><div class="stack"><span>Python</span><span>Gradio</span><span>scikit-learn</span></div><p data-i18n="proj.p1">UFAZ-da Data Science and AI magistr proqramının yekun dissertasiya işi — restoran menyusu üçün süni intellekt əsaslı tövsiyə sistemi.</p><div class="project-links"><a href="https://colab.research.google.com/drive/1hIEgFc9TwxFPEsNiYYYR_i71ggkPMJCo#scrollTo=lLpld0ctfAxi" target="_blank" data-i18n="proj.code">Code (Colab) →</a><a href="#" class="details" data-project="menu">Details ↗</a></div></div></article>
+<article class="panel project" data-category="simulation"><div class="project-media"><img src="https://raw.githubusercontent.com/haJye/DSAI/main/M2DSAI/ImageSynthesis/Project/Gif.gif" alt="Solar System Simulation" loading="lazy"><div class="project-overlay"><span>OUT [5.2]</span><span>CASE STUDY ↗</span></div></div><div class="project-body"><div class="project-meta"><span>M2 DSAI</span><span>02 / 03</span></div><h3>Solar System Simulation</h3><div class="stack"><span>Python</span><span>Pygame</span><span>OpenGL</span></div><p data-i18n="proj.p2">Pygame və OpenGL ilə hazırlanmış interaktiv Günəş Sistemi simulyasiyası — səma cisimlərinin mərkəzi ulduz ətrafında orbital hərəkətini vizuallaşdırır.</p><div class="project-links"><a href="https://github.com/haJye/DSAI/tree/main/M2DSAI/ImageSynthesis/Project" target="_blank" data-i18n="proj.github">GitHub →</a><a href="https://raw.githubusercontent.com/haJye/DSAI/main/M2DSAI/ImageSynthesis/Project/Demo.mp4" target="_blank" data-i18n="proj.video">Video Demo →</a><a href="#" class="details" data-project="solar">Details ↗</a></div></div></article>
+<article class="panel project" data-category="data"><div class="project-media"><div style="height:100%;display:grid;place-items:center;font:700 42px var(--display);color:var(--teal)">MOVIE<br><span style="color:var(--amber)">ML</span></div><div class="project-overlay"><span>OUT [5.3]</span><span>CASE STUDY ↗</span></div></div><div class="project-body"><div class="project-meta"><span data-i18n="proj.tag3">Dissertasiya</span><span>03 / 03</span></div><h3>MovieLens Recommender System</h3><div class="stack"><span>Python</span><span>Pandas</span><span>Scikit-learn</span></div><p data-i18n="proj.p3">MovieLens verilənlər bazası üzərində qurulmuş film tövsiyə sistemi — content-based və collaborative filtering yanaşmaları ilə hazırlanıb.</p><div class="project-links"><a href="https://colab.research.google.com/drive/1QIg_9L1jOvs4PeismmUl_JO6FLci-MKB?usp=sharing" target="_blank" data-i18n="proj.github3">Code (Colab) →</a><a href="#" class="details" data-project="movie">Details ↗</a></div></div></article></div></section>
+<section id="certificates" class="reveal"><div class="section-top"><div><div class="section-label">06 / CREDENTIALS</div><h2 class="section-title" data-i18n="certs.title">Sertifikatlar</h2></div></div><div class="certs">
+<div class="panel cert"><div class="cert-img"><img src="certificates/cert-frontend-developer.jpg" alt="Frontend Developer certificate" loading="lazy"></div><div class="cert-body"><span class="cert-source">Algorithmics</span><span class="cert-date">10.06.2022</span><h3 data-i18n="cert1.title">Frontend-Developer Kursu</h3><p data-i18n="cert1.desc">Azərbaycan Respublikası Təhsil Nazirliyi və Algorithmics tərəfindən təsdiqlənmiş, 256 saatlıq frontend-developer proqramı.</p><div class="cert-links"><a href="certificates/cert-frontend-developer.jpg" target="_blank" data-i18n="cert.view">Sertifikata bax →</a></div></div></div>
+<div class="panel cert"><div class="cert-img"><img src="certificates/cert-qss-internship.jpg" alt="QSS Analytics certificate" loading="lazy"></div><div class="cert-body"><span class="cert-source">QSS Analytics</span><span class="cert-date">03.05.2025</span><h3 data-i18n="cert2.title">Data Science Təcrübəsi (Internship)</h3><p data-i18n="cert2.desc">QSS Analytics-də 3 aylıq Data Science təcrübə proqramı — Python, Machine Learning, Deep Learning və Big Data modullarını tamamladım.</p><div class="cert-links"><a href="certificates/cert-qss-internship.pdf" target="_blank" data-i18n="cert.view">Sertifikata bax →</a></div></div></div>
+<div class="panel cert"><div class="cert-img"><img src="certificates/cert-sql-ibm.jpg" alt="IBM SQL certificate" loading="lazy"></div><div class="cert-body"><span class="cert-source">IBM · Coursera</span><span class="cert-date">18.04.2024</span><h3 data-i18n="cert3.title">Databases and SQL for Data Science with Python</h3><p data-i18n="cert3.desc">IBM tərəfindən hazırlanmış və Coursera vasitəsilə təqdim olunan kurs — verilənlər bazaları və SQL-in Python ilə istifadəsi.</p><div class="cert-links"><a href="certificates/cert-sql-ibm.pdf" target="_blank" data-i18n="cert.view">Sertifikata bax →</a><a href="https://coursera.org/share/57c5297ad86ecd752f3276bd4b26b512" target="_blank" data-i18n="cert.coursera">Coursera →</a></div></div></div>
+<div class="panel cert"><div class="cert-img"><img src="certificates/cert-python-coursera.jpg" alt="Python certificate" loading="lazy"></div><div class="cert-body"><span class="cert-source">University of Michigan · Coursera</span><span class="cert-date">28.02.2021</span><h3 data-i18n="cert4.title">Programming for Everybody (Getting Started with Python)</h3><p data-i18n="cert4.desc">Python proqramlaşdırma dilinin əsaslarına giriş kursu — dəyişənlər, funksiyalar və əsas proqramlaşdırma məntiqi.</p><div class="cert-links"><a href="certificates/cert-python-coursera.pdf" target="_blank" data-i18n="cert.view">Sertifikata bax →</a><a href="https://coursera.org/share/45c22156d521e0688b68d2243abb0e99" target="_blank" data-i18n="cert.coursera">Coursera →</a></div></div></div></div></section>
+<section id="contact" class="reveal"><div class="section-top"><div><div class="section-label">07 / LET'S CONNECT</div><h2 class="section-title" data-i18n="contact.title">Əlaqə</h2></div></div><div class="contact-grid"><div class="panel contact-hero"><div class="eyebrow">OPEN CHANNEL</div><h3>Let’s build<br><span class="accent">something useful.</span></h3><p>Data, machine learning, software or a project idea — the fastest way to reach me is through email or LinkedIn.</p><a class="btn btn-primary" href="mailto:akhundzadahaji@gmail.com">Send an email ↗</a></div><div class="panel contact-links">
+<a class="contact-link" href="mailto:akhundzadahaji@gmail.com"><i class="fa-solid fa-envelope"></i><b>Email</b><span>akhundzadahaji@gmail.com</span></a><a class="contact-link" href="https://wa.me/994516520070?text=Salam%2C%20portfolionuzu%20g%C3%B6rd%C3%BCm%2C%20sizinl%C9%99%20%C9%99laq%C9%99%20saxlamaq%20ist%C9%99yir%C9%99m." target="_blank"><i class="fa-brands fa-whatsapp"></i><b>WhatsApp</b><span>+994 51 652 00 70</span></a><a class="contact-link" href="https://github.com/haJye" target="_blank"><i class="fa-brands fa-github"></i><b>GitHub</b><span>@haJye</span></a><a class="contact-link" href="https://www.linkedin.com/in/hajy/" target="_blank"><i class="fa-brands fa-linkedin"></i><b>LinkedIn</b><span>in/hajy</span></a><a class="contact-link" href="https://www.instagram.com/hajyakh/" target="_blank"><i class="fa-brands fa-instagram"></i><b>Instagram</b><span>@hajyakh</span></a><a class="contact-link" href="https://www.facebook.com/akhundzada.hajy" target="_blank"><i class="fa-brands fa-facebook"></i><b>Facebook</b><span>akhundzada.hajy</span></a><a class="contact-link" href="https://www.hackerrank.com/axundzade02" target="_blank"><i class="fa-brands fa-hackerrank"></i><b>HackerRank</b><span>axundzade02</span></a>
+</div></div></section></main>
+<footer><span>© <span id="footerYear">2026</span> Hacı Axundzadə</span><span>Built with data in mind · <button id="copyEmail">copy email</button></span></footer>
+<div class="modal" id="projectModal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><img class="modal-img" id="modalImg"><div class="modal-content"><div class="section-label">PROJECT / CASE STUDY</div><h3 id="modalTitle"></h3><p id="modalText"></p><div class="stack" id="modalStack"></div></div></div></div>
+<div class="command" id="command"><div class="command-box"><input id="commandInput" placeholder="Search portfolio… (Esc to close)"><div class="command-items"><a href="#about"><span>About me</span><span>↵</span></a><a href="#projects"><span>Projects</span><span>↵</span></a><a href="#experience"><span>Experience</span><span>↵</span></a><a href="#certificates"><span>Certificates</span><span>↵</span></a><a href="#contact"><span>Contact</span><span>↵</span></a><a href="Haci_Axundzade_CV.pdf" download><span>Download CV</span><span>↵</span></a></div></div></div><div class="toast" id="toast">Email copied.</div>
+<script>const translations = {
   "nav.about":{az:"Haqqımda",en:"About",ru:"Обо мне"},
   "nav.skills":{az:"Bacarıqlar",en:"Skills",ru:"Навыки"},
   "nav.experience":{az:"Təcrübə",en:"Experience",ru:"Опыт"},
+  "nav.education":{az:"Təhsil",en:"Education",ru:"Образование"},
   "nav.projects":{az:"Layihələr",en:"Projects",ru:"Проекты"},
   "nav.certificates":{az:"Sertifikatlar",en:"Certificates",ru:"Сертификаты"},
   "nav.contact":{az:"Əlaqə",en:"Contact",ru:"Контакты"},
@@ -593,9 +88,9 @@ const translations = {
     ru:'Data Scientist <span class="tealtxt">·</span> Баку, Азербайджан <span class="tealtxt">·</span> Python / SQL / ML / DL'
   },
   "hero.desc":{
-    az:"Azərbaycan Dövlət Neft və Sənaye Universitetində Kompüter mühəndisliyi üzrə bakalavr, Azərbaycan-Fransız Universitetində (UFAZ) isə Data Science and Artificial Intelligence üzrə magistr təhsili almışam.",
-    en:"I earned my Bachelor's degree in Computer Engineering from Azerbaijan State Oil and Industry University, and my Master's degree in Data Science and Artificial Intelligence from the French-Azerbaijani University (UFAZ).",
-    ru:"Я получил степень бакалавра по компьютерной инженерии в Азербайджанском государственном университете нефти и промышленности и степень магистра по направлению Data Science and Artificial Intelligence во Французско-Азербайджанском университете (UFAZ)."
+    az:"UFAZ-da Data Science and Artificial Intelligence üzrə magistr məzunuyam, tətbiqi maşın öyrənməsi və tövsiyə sistemləri üzərində ixtisaslaşmışam. Python (Pandas, Scikit-learn, Gradio) istifadə edərək kontent-əsaslı tövsiyə sistemi qurmuşam və Data Science təcrübəsi çərçivəsində machine learning, deep learning və big data əsaslarını mənimsəmişəm. SQL əsaslı data idarəetmədən React, Java və Spring Boot ilə veb interfeyslərin hazırlanmasına qədər bütün data pipeline-da rahat işləyirəm.",
+    en:"I am a Data Science and Artificial Intelligence graduate from UFAZ, specializing in applied machine learning and recommendation systems. I built a content-based recommendation system using Python (Pandas, Scikit-learn, Gradio) and developed foundations in machine learning, deep learning, and big data through Data Science experience. I can work across the data pipeline, from SQL-based data management to web interfaces with React, Java, and Spring Boot.",
+    ru:"Я выпускник магистратуры Data Science and Artificial Intelligence в UFAZ, специализируюсь на прикладном машинном обучении и рекомендательных системах. Я создал контентную рекомендательную систему с использованием Python (Pandas, Scikit-learn, Gradio) и получил базовые знания в machine learning, deep learning и big data в рамках опыта в Data Science. Могу работать со всем data pipeline — от управления данными на SQL до веб-интерфейсов на React, Java и Spring Boot."
   },
   "hero.cta1":{az:"Layihələrə bax →",en:"View projects →",ru:"Смотреть проекты →"},
   "hero.cta2":{az:"Əlaqə saxla",en:"Get in touch",ru:"Связаться"},
@@ -605,14 +100,14 @@ const translations = {
 
   "about.title":{az:"Haqqımda",en:"About",ru:"Обо мне"},
   "about.p1":{
-    az:"Salam! Mən <b>Hacı</b> — Azərbaycan-Fransız Universitetinin (UFAZ) Data Science and Artificial Intelligence ixtisası üzrə magistr məzunuyam. <b>Python, SQL, Machine Learning və Deep Learning</b> sahələrində nəzəri və praktiki biliklərə malikəm, həmçinin Pandas və NumPy kitabxanaları ilə məlumatların analizi və emalı üzrə təcrübəm var.",
-    en:"Hi! I'm <b>Haji</b> — a results-driven machine learning engineer with hands-on experience in Python's data science stack (<b>Pandas, NumPy, Scikit-learn</b>) and frameworks like <b>TensorFlow and PyTorch</b>. I'm skilled in data preprocessing, feature engineering, and deploying models for classification, regression, and clustering.",
-    ru:"Привет! Я <b>Хаджи</b> — магистр по направлению Data Science and Artificial Intelligence Французско-Азербайджанского университета (UFAZ). Обладаю теоретическими и практическими знаниями в области <b>Python, SQL, Machine Learning и Deep Learning</b>, а также опытом анализа и обработки данных с помощью Pandas и NumPy."
+    az:"Salam! Mən <b>Hacı</b> — UFAZ-da Data Science and Artificial Intelligence üzrə magistr məzunuyam və tətbiqi maşın öyrənməsi, xüsusilə tövsiyə sistemləri üzərində işləyirəm. <b>Python, Pandas, Scikit-learn və Gradio</b> ilə data hazırlama, model qurma və interaktiv ML interfeysləri hazırlama təcrübəm var.",
+    en:"Hi! I am <b>Haji</b> — a Data Science and Artificial Intelligence graduate from UFAZ, focused on applied machine learning and recommendation systems. I have hands-on experience with <b>Python, Pandas, Scikit-learn, and Gradio</b> for data preparation, model development, and interactive ML interfaces.",
+    ru:"Привет! Я <b>Хаджи</b> — выпускник магистратуры Data Science and Artificial Intelligence в UFAZ, сфокусированный на прикладном машинном обучении и рекомендательных системах. Имею практический опыт с <b>Python, Pandas, Scikit-learn и Gradio</b> для подготовки данных, построения моделей и интерактивных ML-интерфейсов."
   },
   "about.p2":{
-    az:"Bundan əlavə, <b>React, Java və Spring Boot</b> texnologiyalarından istifadə edərək veb tətbiqlərin hazırlanması üzrə bacarıqlara sahibəm və data yönümlü problemlərin həllində biliklərimi inkişaf etdirməyə davam edirəm.",
-    en:"I'm also adept at data visualization, SQL management, and building user-friendly web interfaces with <b>HTML, CSS, JavaScript, React</b>, and backend tools like <b>Java and Spring Boot</b>.",
-    ru:"Также обладаю навыками разработки веб-приложений с использованием <b>React, Java и Spring Boot</b> и постоянно развиваю свои знания в решении задач, основанных на данных."
+    az:"Magistr layihəmdə 8 kateqoriyaya bölünmüş 167 məhsuldan ibarət restoran menyusu üzərində kontent-əsaslı tövsiyə mühərriki qurmuşam; sistem kalori və allergiya həssaslığını nəzərə alan interaktiv Gradio interfeysi ilə tamamlanıb. MovieLens məlumatları üzərində isə content-based və collaborative filtering yanaşmalarını tətbiq edərək fərdiləşdirilmiş film tövsiyələri yaratmışam. Bununla yanaşı, SQL əsaslı data idarəetməsi və React, Java, Spring Boot ilə veb interfeyslərin hazırlanması üzrə də işləyə bilirəm.",
+    en:"For my master's project, I built a content-based recommendation engine for a restaurant menu containing 167 products across 8 categories, with an interactive Gradio interface that considers calorie and allergy sensitivity. On MovieLens rating data, I applied content-based and collaborative filtering approaches to create personalized movie recommendations. I also work with SQL-based data management and web interfaces using React, Java, and Spring Boot.",
+    ru:"В рамках магистерского проекта я создал контентную рекомендательную систему для ресторанного меню из 167 продуктов в 8 категориях с интерактивным интерфейсом Gradio, учитывающим калорийность и аллергические ограничения. На данных рейтингов MovieLens я применил контентный и коллаборативный подходы для персонализированных рекомендаций фильмов. Также работаю с управлением данными на SQL и веб-интерфейсами на React, Java и Spring Boot."
   },
   "about.meta.role":{az:"rol",en:"role",ru:"роль"},
   "about.meta.roleval":{az:"Data Scientist",en:"Data Scientist",ru:"Data Scientist"},
@@ -631,7 +126,11 @@ const translations = {
   },
 
   "exp.title":{az:"Təcrübə",en:"Experience",ru:"Опыт"},
-  "exp.work":{az:"Təcrübə",en:"Work",ru:"Работа"},
+  "exp.work":{az:"İş təcrübəsi",en:"Work experience",ru:"Опыт работы"},
+  "exp.note":{az:"Hər təcrübə kartına klik edərək rol, məsuliyyət və gördüyüm işlərin daha geniş təsvirini oxuya bilərsən.",en:"Click any experience card to expand the role, responsibilities, and a fuller description of the work.",ru:"Нажмите на карточку опыта, чтобы раскрыть роль, обязанности и подробное описание работы."},
+  "edu.note":{az:"Təhsil mərhələlərini də klikləyərək proqram, istiqamət və praktiki işlər haqqında daha ətraflı məlumatı aça bilərsən.",en:"Click an education card to expand the program, focus, and practical work completed during the degree.",ru:"Нажмите на карточку образования, чтобы раскрыть программу, направление и практические работы."},
+  "edu.ufaz.desc":{az:"UFAZ-da Data Science and Artificial Intelligence üzrə magistr təhsili müddətində tətbiqi maşın öyrənməsi və tövsiyə sistemlərinə fokuslanmışam. Python (Pandas, Scikit-learn, Gradio) ilə 8 kateqoriyaya bölünmüş 167 məhsuldan ibarət restoran menyusu üzərində kontent-əsaslı tövsiyə mühərriki qurmuş, kalori və allergiya həssaslığını nəzərə alan interaktiv Gradio interfeysi hazırlamışam. MovieLens reytinq verilənləri üzərində content-based və collaborative filtering yanaşmalarını tətbiq edərək fərdiləşdirilmiş film tövsiyələri yaratmışam. Təhsil çərçivəsində machine learning, deep learning və big data əsasları ilə yanaşı SQL əsaslı data idarəetməsi və data pipeline-ın müxtəlif mərhələləri üzrə praktiki biliklər əldə etmişəm.",en:"During my MSc in Data Science and Artificial Intelligence at UFAZ, I focused on applied machine learning and recommendation systems. Using Python (Pandas, Scikit-learn, and Gradio), I built a content-based recommendation engine for a restaurant menu of 167 products across 8 categories, with an interactive Gradio interface that considers calorie and allergy sensitivity. On MovieLens rating data, I applied content-based and collaborative filtering approaches to create personalized movie recommendations. The degree also strengthened my foundations in machine learning, deep learning, big data, SQL-based data management, and different stages of the data pipeline.",ru:"Во время магистратуры Data Science and Artificial Intelligence в UFAZ я сосредоточился на прикладном машинном обучении и рекомендательных системах. С использованием Python (Pandas, Scikit-learn и Gradio) я создал контентную рекомендательную систему для ресторанного меню из 167 продуктов в 8 категориях с интерактивным интерфейсом Gradio, учитывающим калорийность и аллергические ограничения. На рейтингах MovieLens я применил контентный и коллаборативный подходы для персонализированных рекомендаций фильмов. Обучение также укрепило мои знания в machine learning, deep learning, big data, управлении данными через SQL и различных этапах data pipeline."},
+  "edu.bsc.desc":{az:"Azərbaycan Dövlət Neft və Sənaye Universitetində Kompüter mühəndisliyi üzrə bakalavr təhsili almışam. Bu mərhələ proqramlaşdırma, kompüter elmləri və mühəndislik yanaşmaları üzrə texniki bazamın formalaşmasına əsas yaradıb.",en:"I earned my BSc in Computer Engineering from Azerbaijan State Oil and Industry University. This stage built my technical foundation in programming, computer science, and engineering-oriented problem solving.",ru:"Я получил степень бакалавра по компьютерной инженерии в Азербайджанском государственном университете нефти и промышленности. Этот этап сформировал мою техническую базу в программировании, компьютерных науках и инженерном подходе к решению задач."},
   "exp.edu":{az:"Təhsil",en:"Education",ru:"Образование"},
   "exp.job1.title":{az:"B2C Menecer — TEZİSH Startup",en:"B2C Manager — TEZİSH Startup",ru:"B2C менеджер — TEZİSH Startup"},
   "exp.job1.desc":{
@@ -720,92 +219,21 @@ const translations = {
   "contact.message.ph":{az:"Mesajınızı bura yazın...",en:"Write your message here...",ru:"Напишите ваше сообщение..."},
   "contact.send":{az:"Göndər →",en:"Send →",ru:"Отправить →"},
   "contact.phone":{az:"Telefon",en:"Phone",ru:"Телефон"}
-};
-
-const cvFiles = {
-  az: "Haci_Axundzade_CV.pdf",
-  en: "Haji_Akhundzada_CV_EN.pdf",
-  ru: "Haji_Akhundzada_CV_EN.pdf"
-};
-const pageTitles = {
-  az: "Hacı Axundzadə — Data Scientist",
-  en: "Haji Akhundzada — Data Scientist",
-  ru: "Хаджи Ахундзаде — Data Scientist"
-};
-
-function applyLanguage(lang){
-  document.documentElement.setAttribute('lang', lang);
-  document.title = pageTitles[lang] || pageTitles.az;
-  const cv = document.getElementById('cvLink');
-  if(cv){ cv.setAttribute('href', cvFiles[lang] || cvFiles.az); }
-  document.querySelectorAll('[data-i18n]').forEach(function(el){
-    const key = el.getAttribute('data-i18n');
-    const entry = translations[key];
-    if(entry && entry[lang] !== undefined){
-      el.innerHTML = entry[lang];
-    }
-  });
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
-    const key = el.getAttribute('data-i18n-placeholder');
-    const entry = translations[key];
-    if(entry && entry[lang] !== undefined){
-      el.setAttribute('placeholder', entry[lang]);
-    }
-  });
-  document.querySelectorAll('#langSwitch button').forEach(function(b){
-    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
-  });
-  localStorage.setItem('lang', lang);
-}
-
-(function(){
-  const stored = localStorage.getItem('lang') || 'az';
-  applyLanguage(stored);
-  document.querySelectorAll('#langSwitch button').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      applyLanguage(btn.getAttribute('data-lang'));
-    });
-  });
-})();
-
-/* ================= MOBILE NAV TOGGLE ================= */
-(function(){
-  const toggle = document.getElementById('navToggle');
-  const links = document.getElementById('navLinks');
-  if(!toggle || !links) return;
-  toggle.addEventListener('click', function(){
-    links.classList.toggle('open');
-  });
-  links.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click', function(){ links.classList.remove('open'); });
-  });
-})();
-
-/* ================= NAV SMOOTH SCROLL ================= */
-(function(){
-  const header = document.querySelector('header');
-  const logo = document.getElementById('logoHome');
-  if(logo){
-    logo.addEventListener('click', function(e){
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      history.pushState(null, '', window.location.pathname);
-    });
-  }
-  document.querySelectorAll('.navlinks a[href^="#"]').forEach(function(link){
-    link.addEventListener('click', function(e){
-      const id = link.getAttribute('href').slice(1);
-      const target = document.getElementById(id);
-      if(!target) return;
-      e.preventDefault();
-      const headerH = header ? header.offsetHeight : 0;
-      const top = target.getBoundingClientRect().top + window.pageYOffset - headerH - 12;
-      window.scrollTo({ top: top, behavior: 'smooth' });
-      history.pushState(null, '', '#' + id);
-    });
-  });
-})();
+};</script>
+<script>
+const cvFiles={az:"Haci_Axundzade_CV.pdf",en:"Haji_Akhundzada_CV_EN.pdf",ru:"Haji_Akhundzada_CV_EN.pdf"};
+const pageTitles={az:"Hacı Axundzadə — Data Scientist",en:"Haji Akhundzada — Data Scientist",ru:"Хаджи Ахундзаде — Data Scientist"};
+function applyLanguage(lang){document.documentElement.lang=lang;document.title=pageTitles[lang]||pageTitles.az;const cv=document.getElementById("cvLink");if(cv)cv.href=cvFiles[lang]||cvFiles.az;document.querySelectorAll("[data-i18n]").forEach(el=>{const e=translations[el.dataset.i18n];if(e&&e[lang]!==undefined)el.innerHTML=e[lang]});document.querySelectorAll("#langSwitch button").forEach(b=>b.classList.toggle("active",b.dataset.lang===lang));localStorage.setItem("lang",lang)}
+applyLanguage(localStorage.getItem("lang")||"az");document.querySelectorAll("#langSwitch button").forEach(b=>b.onclick=()=>applyLanguage(b.dataset.lang));
+const root=document.documentElement,themeBtn=document.getElementById("themeToggle");function setTheme(t){root.dataset.theme=t;themeBtn.textContent=t==="light"?"☀":"☾";localStorage.setItem("theme",t)}setTheme(localStorage.getItem("theme")||"dark");themeBtn.onclick=()=>setTheme(root.dataset.theme==="light"?"dark":"light");
+const nav=document.getElementById("navLinks");document.getElementById("navToggle").onclick=()=>nav.classList.toggle("open");nav.querySelectorAll("a").forEach(a=>a.onclick=()=>nav.classList.remove("open"));document.getElementById("logoHome").onclick=e=>{e.preventDefault();scrollTo({top:0,behavior:"smooth"})};
+addEventListener("scroll",()=>{const d=document.documentElement;document.getElementById("progress").style.width=(scrollY/(d.scrollHeight-innerHeight)*100)+"%"});
+const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.08});document.querySelectorAll(".reveal").forEach(e=>observer.observe(e));
+document.querySelectorAll(".filter").forEach(btn=>btn.onclick=()=>{document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));btn.classList.add("active");const f=btn.dataset.filter;document.querySelectorAll(".project").forEach(p=>p.classList.toggle("hidden",f!=="all"&&p.dataset.category!==f))});
+const projectData={menu:{title:"AI-Based Menu Recommendations",text:"UFAZ-da Data Science and AI magistr proqramının yekun dissertasiya işi — restoran menyusu üçün süni intellekt əsaslı tövsiyə sistemi.",img:"https://raw.githubusercontent.com/haJye/DSAI/main/M2DSAI/Dissertation/Peek%202026-07-21%2023-05.gif",stack:["Python","Gradio","scikit-learn"]},solar:{title:"Solar System Simulation",text:"Pygame və OpenGL ilə hazırlanmış interaktiv Günəş Sistemi simulyasiyası — səma cisimlərinin orbital hərəkətini vizuallaşdırır.",img:"https://raw.githubusercontent.com/haJye/DSAI/main/M2DSAI/ImageSynthesis/Project/Gif.gif",stack:["Python","Pygame","OpenGL"]},movie:{title:"MovieLens Recommender System",text:"MovieLens verilənlər bazası üzərində qurulmuş film tövsiyə sistemi — content-based və collaborative filtering yanaşmaları ilə hazırlanıb.",img:"",stack:["Python","Pandas","Scikit-learn"]}};
+const modal=document.getElementById("projectModal");document.querySelectorAll(".details").forEach(a=>a.onclick=e=>{e.preventDefault();const d=projectData[a.dataset.project];document.getElementById("modalTitle").textContent=d.title;document.getElementById("modalText").textContent=d.text;const im=document.getElementById("modalImg");im.src=d.img;im.style.display=d.img?"block":"none";document.getElementById("modalStack").innerHTML=d.stack.map(x=>"<span>"+x+"</span>").join("");modal.classList.add("open")});document.getElementById("modalClose").onclick=()=>modal.classList.remove("open");modal.onclick=e=>{if(e.target===modal)modal.classList.remove("open")};
+document.querySelectorAll(".event-card").forEach(card=>{card.addEventListener("click",()=>{const open=card.getAttribute("aria-expanded")==="true";document.querySelectorAll(".event-card").forEach(c=>c.setAttribute("aria-expanded","false"));card.setAttribute("aria-expanded",String(!open))})});
+const command=document.getElementById("command");function openCommand(){command.classList.add("open");setTimeout(()=>document.getElementById("commandInput").focus(),20)}function closeCommand(){command.classList.remove("open")}document.getElementById("commandBtn").onclick=openCommand;addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openCommand()}if(e.key==="Escape"){closeCommand();modal.classList.remove("open")}});document.querySelectorAll(".command-items a").forEach(a=>a.onclick=closeCommand);
+document.getElementById("copyEmail").onclick=async()=>{try{await navigator.clipboard.writeText("akhundzadahaji@gmail.com")}catch(e){}const t=document.getElementById("toast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)};document.getElementById("footerYear").textContent=new Date().getFullYear();
 </script>
-
-</body>
-</html>
+</body></html>
