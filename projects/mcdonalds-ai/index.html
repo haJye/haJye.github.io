@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>McDonald's Azerbaijan · AI Menu Recommendation</title>
+<style>
+:root{--bg:#101114;--panel:#191b20;--panel2:#22252b;--text:#f5f5f5;--muted:#a9adb7;--accent:#ffc72c;--red:#da291c;--line:#30343c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#30251a 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.55 Inter,system-ui,Segoe UI,Arial,sans-serif}
+header{padding:28px max(20px,calc((100vw - 1120px)/2));border-bottom:1px solid var(--line);background:#111216dd}
+.brand{font-size:12px;letter-spacing:2px;color:var(--accent);font-weight:800}.hero h1{font-size:clamp(27px,4vw,43px);line-height:1.1;margin:12px 0}.hero p{color:var(--muted);max-width:700px;margin:0}
+main{max-width:1120px;margin:28px auto;padding:0 20px 50px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:11px 16px;border-radius:12px;cursor:pointer;font-weight:700}.tab.active{background:var(--accent);border-color:var(--accent);color:#171717}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:20px}.panel h2{margin:0 0 5px;font-size:22px}.sub{color:var(--muted);margin:0 0 18px}
+label{display:block;color:#d9dbe0;font-size:13px;font-weight:700;margin-bottom:7px}select,input{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;min-width:0}
+button.primary{background:var(--accent);color:#171717;border:0;border-radius:11px;padding:12px 19px;font-weight:800;cursor:pointer}button.primary:hover{filter:brightness(1.06)}
+.controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:end}.results{margin-top:22px}.target{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center;background:var(--panel2);padding:16px;border-radius:14px;margin-bottom:18px}.target img{width:100%;height:145px;object-fit:contain}.target h3{margin:0 0 6px}.muted{color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}.item{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:13px;min-width:0}.item img{width:100%;height:145px;object-fit:contain}.item h3{font-size:15px;margin:7px 0}.item p{font-size:13px;color:var(--muted);margin:5px 0}.tag{display:inline-block;font-size:11px;padding:3px 8px;border-radius:20px;background:#3a3020;color:#ffda70;margin:2px 4px 2px 0}
+.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}.counts{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:16px 0}.count{background:var(--panel2);border:1px solid var(--line);padding:10px;border-radius:11px}.count label{margin-bottom:5px}.checkgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin:10px 0 18px}.check{display:flex;gap:8px;align-items:center;background:var(--panel2);padding:9px;border-radius:9px;font-size:13px}.check input{width:auto}
+.notice{border-left:3px solid var(--accent);padding:10px 13px;background:#282319;color:#d8d0bf;border-radius:5px;font-size:12px;margin-top:18px}.message{padding:13px;border-radius:10px;background:#32251d;color:#ffd9a8;margin-top:14px}.menuhead{text-align:center;color:var(--accent);margin:24px 0 12px}.menuhead small{color:var(--muted);display:block;font-weight:400}
+footer{max-width:1120px;margin:auto;padding:20px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+.hidden{display:none!important}
+@media(max-width:600px){header{padding:22px 18px}.panel{padding:16px}.controls{grid-template-columns:1fr}.target{grid-template-columns:1fr;text-align:center}.target img{height:130px}}
+</style>
+</head>
+<body>
+<header><div class="hero"><div class="brand">McDONALD'S AZERBAIJAN · DATA SCIENCE PROJECT</div><h1>AI-Based Menu<br>Recommendations</h1><p>Qida göstəriciləri və məhsul mətnləri əsasında oxşar seçimləri kəşf et, yaxud kalori hədəfinə uyğun menyu kombinasiyaları yarat.</p></div></header>
+<main>
+<div class="tabs"><button class="tab active" data-tab="recommend">Məhsul tövsiyələri</button><button class="tab" data-tab="builder">Menyu generatoru</button></div>
+<section id="recommend" class="panel">
+<h2>Oxşar məhsul tövsiyəsi</h2><p class="sub">Əsas menyudan məhsul seç. Model qida dəyərləri və məhsul adı/allergen mətninin oxşarlığını birləşdirir.</p>
+<div class="controls"><div><label for="product">Məhsul seç</label><select id="product"></select></div><button class="primary" id="recommendBtn">Tövsiyələri göstər</button></div>
+<div id="recommendResults" class="results"></div>
+<div class="notice">Model notebook-dakı yanaşmanı saxlayır: MinMaxScaler + qida göstəriciləri üzrə cosine similarity, TF-IDF (Name + Allergens) üzrə cosine similarity və 0.5 / 0.5 birləşməsi. Tövsiyə yalnız notebook-da olduğu kimi “Main” kateqoriyasındakı məhsullar üçündür.</div>
+</section>
+<section id="builder" class="panel hidden">
+<h2>Fərdi menyu generatoru</h2><p class="sub">Kalori hədəfi, əsas məhsulun protein növü, kateqoriya sayları və istənilən allergen istisnalarını seç.</p>
+<div class="formgrid">
+<div><label for="kcal">Hədəf enerji (kcal)</label><input id="kcal" type="number" min="1" placeholder="Məsələn, 1200"></div>
+<div><label for="protein">Əsas məhsulun növü</label><select id="protein"><option>Other</option><option>Meat</option><option>Chicken</option><option>Fish</option></select></div>
+</div>
+<label style="margin-top:18px">Kateqoriya üzrə məhsul sayı</label><div id="counts" class="counts"></div>
+<label>İstisna ediləcək allergenlər</label><div id="allergens" class="checkgrid"></div>
+<button class="primary" id="generateBtn">5 menyu yarat</button><div id="menuResults" class="results"></div>
+<div class="notice">Notebook-dakı qaydalar saxlanılıb: hər menyunun ümumi enerjisi hədəfdən maksimum ±100 kcal fərqlənə bilər; maksimum 5000 təsadüfi cəhd edilir. Allergen filtri məlumat bazasındakı mətnə əsaslanır və allergiya təhlükəsizliyinə zəmanət vermir. İstifadədən əvvəl rəsmi allergen məlumatını yoxla.</div>
+</section>
+</main>
+<footer>Portfolio demo · Mənbə: təqdim edilmiş McDonald's Azerbaijan notebook-u və CSV dataset-ləri · Model brauzerdə lokal hesablanır; server/API tələb etmir.</footer>
+<script>
+let DB;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=v=>Number.isFinite(Number(v))?Number(v):0;
+function itemCard(x){return `<article class="item"><img loading="lazy" src="${esc(x['Image URL'])}" alt="${esc(x.Name)}" onerror="this.style.opacity=.15"><h3>${esc(x.Name)}</h3><p>${esc(x.Description||'Təsvir mövcud deyil')}</p><p><b>${num(x['Energy (kcal)']).toFixed(0)} kcal</b> · Zülal ${x['Protein (g)']==null?'—':num(x['Protein (g)']).toFixed(1)+' g'}</p><p>Allergenlər: ${esc(x.Allergens||'Göstərilməyib')}</p><span class="tag">${esc(x.Category)}</span></article>`}
+function init(){
+const mains=DB.items.filter(x=>x.Category==='Main');
+$('product').innerHTML=mains.map(x=>`<option value="${esc(x.Name)}">${esc(x.Name)}</option>`).join('');
+$('counts').innerHTML=DB.categories.map(c=>`<div class="count"><label for="cat-${esc(c)}">${esc(c)}</label><input id="cat-${esc(c)}" type="number" min="0" step="1" value="${c==='Main'?1:0}"></div>`).join('');
+$('allergens').innerHTML=DB.allergens.map(a=>`<label class="check"><input type="checkbox" value="${esc(a)}"> ${esc(a)}</label>`).join('');
+}
+function recommend(){
+const name=$('product').value, idx=DB.mainItems.indexOf(name);
+if(idx<0)return;
+const scores=DB.similarity[idx].map((score,i)=>({score,i})).sort((a,b)=>b.score-a.score).slice(1,6);
+const target=DB.items.find(x=>x.Name===name);
+const cards=scores.map(o=>{const x=DB.items.find(y=>y.Name===DB.mainItems[o.i]);return {...x,score:o.score}});
+$('recommendResults').innerHTML=`<div class="target"><img src="${esc(target['Image URL'])}" alt="${esc(name)}"><div><span class="tag">Seçilmiş məhsul</span><h3>${esc(name)}</h3><p class="muted">${esc(target.Description)}</p><p>Allergenlər: ${esc(target.Allergens||'Göstərilməyib')}</p></div></div><h3>Top 5 oxşar məhsul</h3><div class="cards">${cards.map(x=>`<article class="item"><img loading="lazy" src="${esc(x['Image URL'])}" alt="${esc(x.Name)}" onerror="this.style.opacity=.15"><h3>${esc(x.Name)}</h3><p>${esc(x.Description)}</p><p>Allergenlər: ${esc(x.Allergens||'Göstərilməyib')}</p><p><b>Oxşarlıq balı: ${(x.score*100).toFixed(1)}%</b></p></article>`).join('')}</div>`;
+}
+function generate(){
+const target=Number($('kcal').value), protein=$('protein').value;
+const counts={};DB.categories.forEach(c=>counts[c]=Math.max(0,Math.floor(Number($('cat-'+c).value)||0)));
+const total=Object.values(counts).reduce((a,b)=>a+b,0);
+const out=$('menuResults');out.innerHTML='';
+if(!Number.isFinite(target)||target<=0){out.innerHTML='<div class="message">Düzgün kalori hədəfi daxil et.</div>';return}
+if(total<3){out.innerHTML='<div class="message">Ən azı 3 məhsul seçilməlidir.</div>';return}
+const avoid=[...document.querySelectorAll('#allergens input:checked')].map(x=>x.value.toLocaleLowerCase('az'));
+let filtered=DB.items.filter(x=>!avoid.some(a=>String(x.Allergens||'').toLocaleLowerCase('az').includes(a)));
+const pools={};
+for(const c of DB.categories){if(!counts[c])continue;let p=filtered.filter(x=>x.Category===c);
+if(c==='Main'&&['Meat','Chicken','Fish'].includes(protein)){const re=protein==='Meat'?/mal/i:protein==='Chicken'?/toyuq|chicken/i:/balıq/i;p=p.filter(x=>re.test(x.Description||''))}
+if(p.length<counts[c]){out.innerHTML=`<div class="message">${esc(c)} kateqoriyasında ${counts[c]} məhsul seçmək üçün kifayət qədər uyğun məhsul yoxdur.</div>`;return}pools[c]=p}
+const menus=[],seen=new Set();let attempts=0;
+while(menus.length<5&&attempts<5000){attempts++;const menu=[];
+for(const c of Object.keys(pools)){const pool=[...pools[c]];for(let j=0;j<counts[c];j++){const k=Math.floor(Math.random()*pool.length);menu.push(pool.splice(k,1)[0])}}
+const kcal=menu.reduce((s,x)=>s+num(x['Energy (kcal)']),0);
+if(Math.abs(kcal-target)<=100){const key=menu.map(x=>x.Name).sort().join('|');if(!seen.has(key)){seen.add(key);menus.push({items:menu,kcal})}}}
+if(!menus.length){out.innerHTML='<div class="message">Uyğun menyu tapılmadı. Kalori hədəfini və kateqoriya saylarını dəyişərək yenidən yoxla.</div>';return}
+out.innerHTML=menus.map((m,i)=>`<h3 class="menuhead">Menyu #${i+1}<small>Ümumi enerji: ${m.kcal.toFixed(0)} kcal · Hədəf: ${target} kcal</small></h3><div class="cards">${m.items.map(itemCard).join('')}</div>`).join('');
+}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));$('recommend').classList.toggle('hidden',b.dataset.tab!=='recommend');$('builder').classList.toggle('hidden',b.dataset.tab!=='builder')}));
+$('recommendBtn').addEventListener('click',recommend);$('generateBtn').addEventListener('click',generate);
+fetch('./data.json').then(r=>{if(!r.ok)throw Error('data.json yüklənmədi');return r.json()}).then(d=>{DB=d;init();recommend()}).catch(e=>{document.querySelector('main').innerHTML=`<div class="message">Məlumat faylı yüklənmədi: ${esc(e.message)}. index.html faylını data.json ilə eyni qovluqda aç.</div>`});
+</script>
+</body></html>
