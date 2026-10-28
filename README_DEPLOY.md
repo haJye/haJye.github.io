@@ -39,3 +39,8 @@ The project demos are static and need no Python server at runtime. External netw
 ## Validation
 
 The package was checked for valid HTML structure, JavaScript syntax, relative project links, required data assets, and local HTTP serving. Full visual browser testing still depends on a real browser with network access.
+
+
+## 2026-10-28 fixes
+- McDonald's demo now serves 215 product images locally from `projects/mcdonalds-ai/images/`; product ID 130 has no supplied image.
+- Solar System moon orbit paths now use `parent.mesh.position`, fixing the `Vector3.copy` runtime error.

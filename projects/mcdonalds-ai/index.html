@@ -48,7 +48,7 @@ let DB;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const num=v=>Number.isFinite(Number(v))?Number(v):0;
-function itemCard(x){return `<article class="item"><img loading="lazy" src="${esc(x['Image URL'])}" alt="${esc(x.Name)}" onerror="this.style.opacity=.15"><h3>${esc(x.Name)}</h3><p>${esc(x.Description||'Təsvir mövcud deyil')}</p><p><b>${num(x['Energy (kcal)']).toFixed(0)} kcal</b> · Zülal ${x['Protein (g)']==null?'—':num(x['Protein (g)']).toFixed(1)+' g'}</p><p>Allergenlər: ${esc(x.Allergens||'Göstərilməyib')}</p><span class="tag">${esc(x.Category)}</span></article>`}
+function itemCard(x){return `<article class="item"><img loading="lazy" decoding="async" src="${esc(x['Image URL'])}" alt="${esc(x.Name)}" onerror="this.onerror=null;this.style.display='none'><h3>${esc(x.Name)}</h3><p>${esc(x.Description||'Təsvir mövcud deyil')}</p><p><b>${num(x['Energy (kcal)']).toFixed(0)} kcal</b> · Zülal ${x['Protein (g)']==null?'—':num(x['Protein (g)']).toFixed(1)+' g'}</p><p>Allergenlər: ${esc(x.Allergens||'Göstərilməyib')}</p><span class="tag">${esc(x.Category)}</span></article>`}
 function init(){
 const mains=DB.items.filter(x=>x.Category==='Main');
 $('product').innerHTML=mains.map(x=>`<option value="${esc(x.Name)}">${esc(x.Name)}</option>`).join('');
@@ -61,7 +61,7 @@ if(idx<0)return;
 const scores=DB.similarity[idx].map((score,i)=>({score,i})).sort((a,b)=>b.score-a.score).slice(1,6);
 const target=DB.items.find(x=>x.Name===name);
 const cards=scores.map(o=>{const x=DB.items.find(y=>y.Name===DB.mainItems[o.i]);return {...x,score:o.score}});
-$('recommendResults').innerHTML=`<div class="target"><img src="${esc(target['Image URL'])}" alt="${esc(name)}"><div><span class="tag">Seçilmiş məhsul</span><h3>${esc(name)}</h3><p class="muted">${esc(target.Description)}</p><p>Allergenlər: ${esc(target.Allergens||'Göstərilməyib')}</p></div></div><h3>Top 5 oxşar məhsul</h3><div class="cards">${cards.map(x=>`<article class="item"><img loading="lazy" src="${esc(x['Image URL'])}" alt="${esc(x.Name)}" onerror="this.style.opacity=.15"><h3>${esc(x.Name)}</h3><p>${esc(x.Description)}</p><p>Allergenlər: ${esc(x.Allergens||'Göstərilməyib')}</p><p><b>Oxşarlıq balı: ${(x.score*100).toFixed(1)}%</b></p></article>`).join('')}</div>`;
+$('recommendResults').innerHTML=`<div class="target"><img loading="lazy" decoding="async" src="${esc(target['Image URL'])}" onerror="this.onerror=null;this.style.display='none'" alt="${esc(name)}"><div><span class="tag">Seçilmiş məhsul</span><h3>${esc(name)}</h3><p class="muted">${esc(target.Description)}</p><p>Allergenlər: ${esc(target.Allergens||'Göstərilməyib')}</p></div></div><h3>Top 5 oxşar məhsul</h3><div class="cards">${cards.map(x=>`<article class="item"><img loading="lazy" decoding="async" src="${esc(x['Image URL'])}" alt="${esc(x.Name)}" onerror="this.onerror=null;this.style.display='none'><h3>${esc(x.Name)}</h3><p>${esc(x.Description)}</p><p>Allergenlər: ${esc(x.Allergens||'Göstərilməyib')}</p><p><b>Oxşarlıq balı: ${(x.score*100).toFixed(1)}%</b></p></article>`).join('')}</div>`;
 }
 function generate(){
 const target=Number($('kcal').value), protein=$('protein').value;
