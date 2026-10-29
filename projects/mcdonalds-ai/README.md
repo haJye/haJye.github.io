@@ -26,8 +26,6 @@ No Python server, API key, paid hosting, or model inference backend is needed at
 - Missing numeric values are filled with the mean of the corresponding `Main`-category feature, then MinMax-scaled.
 - Nutritional cosine similarity is averaged equally with TF-IDF cosine similarity for `Name + Allergens` (`stop_words='english'`).
 - The top five results exclude the selected item, as in the notebook.
-- The five recommendation cards are displayed in one aligned row on wide screens, with responsive layouts on smaller screens.
-- Each generated menu displays the actual selected product names in its heading and as individual product cards.
 - The menu builder uses all eight categories in the categorized CSV, filters by protein type for `Main`, supports the notebook's allergen exclusions, and attempts to generate five unique menus within ±100 kcal of the target (up to 5,000 random attempts).
 
 ## Dataset notes
