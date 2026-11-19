@@ -1,149 +1,76 @@
-<div align="center">
+# Hacı Axundzadə — Portfolio
 
-# Hacı Axundzadə · Portfolio
+Data Scientist portfoliom: AZ / EN / RU dillərində, tünd və açıq temalı, asılılıqsız statik sayt (GitHub Pages).
+Canlı: **https://hajye.github.io/** · Canlı demo: **https://hajye.github.io/demo/menu/**
 
-**Data Science · Machine Learning · AI · Software Development**
+## Quruluş
 
-[![Website](https://img.shields.io/badge/Portfolio-Live-FFC928?style=for-the-badge&logo=githubpages&logoColor=111111)](https://hajye.github.io/)
-[![GitHub](https://img.shields.io/badge/GitHub-haJye-181717?style=for-the-badge&logo=github)](https://github.com/haJye)
+```
+index.html                 ← bütün sayt (HTML + CSS + JS bir faylda)
+demo/menu/index.html       ← brauzerdə işləyən McDonald's menyu generatoru (server/Gradio lazım deyil)
+demo/menu/img/             ← məhsul şəkilləri (webp)
+assets/                    ← layihə kartı şəkilləri
+certificates/              ← sertifikat şəkilləri və PDF-ləri
+Haci_Axundzade_CV-1.pdf    ← CV (AZ)
+Haji_Akhundzada_CV_EN-1.pdf← CV (EN / RU)
+og-image.png               ← sosial şəbəkədə link önizləməsi (1200×630)
+robots.txt, sitemap.xml    ← axtarış sistemləri üçün
+```
 
-*A personal portfolio featuring selected projects, technical skills, experience, and experiments.*
+## Bölmələr
 
-</div>
+Profile · Toolkit (ikonlu bacarıqlar) · Languages · Experience · Education · Projects · Certificates · Contact.
+HA dairəsi interaktivdir (hover/klik), layihələr kateqoriyaya görə filtrlənir, hər layihənin **Case study** pəncərəsi var.
 
----
+## Layihələr
 
-## ✦ Overview
+| # | Layihə | Demo / kod |
+|---|--------|-----------|
+| 01 | AI-Based Menu Recommendation (McDonald's) | Canlı demo, Colab |
+| 02 | Solar System (Image Synthesis) | GitHub, video |
+| 03 | MovieLens Recommender | Colab |
+| 04 | Fastener Defect Classification (M1 DSAI / DL) | GitHub, izahat PDF, kod |
 
-This repository contains the source code for my personal portfolio website. It brings together my background, technical interests, selected projects, and practical work in one place.
+## Yeni layihə əlavə etmək
 
-The website uses a **terminal- and Jupyter-inspired visual style**, with notebook-like sections and a responsive layout.
+1. **Kart.** `index.html`-də `#projects` bölməsindəki bir `<article class="panel project" data-category="data|simulation">` blokunu kopyalayın. Şəkli `assets/` qovluğuna qoyun (`.webp` tövsiyə olunur). Sayğacı (`0X PROJECTS`) və `0X / 0X` nömrələrini yeniləyin.
+2. **Tərcümə.** Kartdakı mətn üçün `translations` obyektinə yeni açar əlavə edin (məs. `"proj.p5": {az:"…", en:"…", ru:"…"}`) və elementə `data-i18n="proj.p5"` yazın.
+3. **Case study.** `CS` obyektinə yeni açar əlavə edin (məs. `p5`). Hər açarda `img`, `stack`, `links` (ümumi) və `az` / `en` / `ru` bloku var; hər dil blokunda `title`, `sub`, `metrics`, `sections` olur. Şəkil ağ fonda tam görünməlidirsə (qrafik), `fit` əlavə edin. Kartdakı düymədə `data-project="p5"` olsun.
+4. Brauzerdə yoxlayın: 3 dil, 2 tema, 390 px mobil görünüş.
 
-## ✦ What's inside
+## Analitika (könüllü, cookie-siz)
 
-| Section | What you'll find |
-| --- | --- |
-| **About** | A short introduction and professional focus |
-| **Skills** | Data & ML, backend, frontend, tools, and languages |
-| **Experience & Education** | Work experience and academic background |
-| **Projects** | Selected projects with visual previews and links |
-| **Currently Learning** | Technologies and topics I am exploring |
-| **GitHub Activity** | Repository statistics and recent public activity |
-| **Contact** | Ways to get in touch |
+[GoatCounter](https://www.goatcounter.com) istifadə olunur. Hazırda **söndürülüb**.
 
-## ✦ Featured projects
+1. goatcounter.com-da pulsuz hesab açın (məs. `hajye` → `hajye.goatcounter.com`).
+2. İki faylda `GOATCOUNTER_CODE=""` sətrinə kodu yazın: `index.html` və `demo/menu/index.html`.
+3. "Do Not Track" aktiv olan və localhost-dan gələn ziyarətlər sayılmır.
 
-A selection of interactive and technical projects presented in the portfolio:
+## SEO və link önizləməsi
 
-- **McDonald's Azerbaijan — AI Menu Recommendation**  
-  A browser-based product recommendation and menu-generation demo using a precomputed item-similarity matrix, nutrition information, and allergen filters.
-- **MovieLens**  
-  A recommendation-system project based on the MovieLens dataset.
-- **Solar System**  
-  An interactive browser-based solar-system experience.
+`<head>`-də description, canonical, Open Graph / Twitter kartları və JSON-LD (`Person`) var. Önizləmə şəkli `og-image.png`-dir. Yeni domen istifadə etsəniz `canonical`, `og:url`, `sitemap.xml` və `robots.txt` daxilindəki `hajye.github.io` ünvanlarını dəyişin.
+Önizləməni yoxlamaq üçün: LinkedIn Post Inspector və ya opengraph.xyz.
 
-Visit the [live portfolio](https://hajye.github.io/) for project previews and additional details.
+## CV faylları
 
-## ✦ Tech stack
+CV düyməsi seçilmiş dilə uyğun faylı yükləyir (`cvFiles` dəyişəni, `index.html`). Faylın adını dəyişsəniz, həmin dəyişəni və `#cvLink` ünvanını da yeniləyin.
 
-- **Frontend:** HTML5, CSS3, JavaScript
-- **Styling:** CSS Grid, Flexbox, custom properties, responsive media queries
-- **Typography:** Google Fonts — Space Grotesk, Inter, JetBrains Mono
-- **Project demos:** Standalone browser-based HTML/CSS/JavaScript where applicable
-
-The portfolio itself does not require a frontend framework, build system, or package manager.
-
-## ✦ Run locally
-
-You can open the main page directly in a browser. For a local HTTP server, use:
+## Lokal işə salma
 
 ```bash
 git clone https://github.com/haJye/haJye.github.io.git
 cd haJye.github.io
-
-# Python 3
-python -m http.server 8000
+python3 -m http.server 8000   # sonra http://localhost:8000
 ```
 
-Then visit `http://localhost:8000`.
+`index.html`-i birbaşa açmaq da işləyir, amma demo və şəkillər üçün lokal server daha etibarlıdır.
 
-Some browser features may behave more reliably when served over HTTP rather than opened through a `file://` URL.
+## Deployment (GitHub Pages)
 
-## ✦ Repository structure
+Repo → **Settings → Pages** → Source: `Deploy from a branch` → `main` / `(root)`. Bir neçə dəqiqəyə sayt canlı olur.
 
-```text
-haJye.github.io/
-├── index.html
-├── projects/
-│   ├── mcdonalds-ai/
-│   │   ├── index.html
-│   │   ├── data.json
-│   │   ├── images/
-│   │   ├── source-data/
-│   │   └── README.md
-│   ├── movielens/
-│   └── solar-system/
-├── images/
-└── README.md
-```
+## Əlaqə
 
-*The tree above highlights the main portfolio and project areas; individual asset files are omitted.*
-
-## ✦ Add or update a project
-
-1. Add the project files under `projects/<project-name>/`.
-2. Add a project card to the projects section in the root `index.html`.
-3. Include a concise description, relevant technologies, and a preview image or animation where available.
-4. Verify the project locally before publishing.
-
-Example project-card structure:
-
-```html
-<article class="panel project" data-category="data">
-  <div class="project-media">
-    <img src="PROJECT_PREVIEW.webp" alt="Project preview" loading="lazy">
-  </div>
-  <div class="project-meta">
-    <span>Category</span>
-    <span>Project</span>
-  </div>
-  <div class="project-body">
-    <h3>Project title</h3>
-    <div class="stack">
-      <span>Python</span>
-      <span>Machine Learning</span>
-    </div>
-    <p>A short and accurate project description.</p>
-    <div class="project-links">
-      <a href="PROJECT_URL" target="_blank" rel="noopener noreferrer">Explore →</a>
-    </div>
-  </div>
-</article>
-```
-
-## ✦ Deployment
-
-The website is designed to be hosted with **GitHub Pages**:
-
-1. Open the repository's **Settings → Pages**.
-2. Select **Deploy from a branch**.
-3. Choose the `main` branch and `/ (root)` directory.
-4. Save and wait for the deployment to complete.
-
-The published website is available at [hajye.github.io](https://hajye.github.io/).
-
-## ✦ Notes
-
-- Project descriptions are intended to reflect the actual implementation; demos may have limitations documented in their own folders.
-- The McDonald's recommendation demo uses precomputed similarity scores and does not use personal purchase history or live model inference.
-- The McDonald's demo's allergen filtering is based on the available dataset and should not be treated as a medical safety guarantee.
-
----
-
-<div align="center">
-
-**Thanks for stopping by.**
+GitHub: [@haJye](https://github.com/haJye)
 
 © 2026 Hacı Axundzadə
-
-</div>
