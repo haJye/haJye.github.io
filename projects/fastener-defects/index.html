@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fastener Defect Inspection · OK / NOK demo</title>
+<meta name="description" content="Upload a photo of a nut, washer or screw and a MobileNetV2 model running in your browser tells you whether it is OK or NOK (defective).">
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#121b30;--panel2:#18243d;--line:#2a3a59;--text:#edf3ff;--muted:#9eacc4;--accent:#9dcbff;--gold:#f2c879;--ok:#6ee7a8;--okbg:#0f2a21;--nok:#ff8a8a;--nokbg:#33181c}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:radial-gradient(ellipse at 85% -10%,#20365c 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.55 Inter,system-ui,Segoe UI,Arial,sans-serif}
+header{padding:34px max(20px,calc((100vw - 1120px)/2)) 28px;border-bottom:1px solid var(--line);background:#0b1020cc}
+.back{display:inline-block;margin-bottom:16px;color:var(--muted);font-size:13px;text-decoration:none}.back:hover{color:var(--accent)}
+.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:800}
+.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.05;letter-spacing:-.04em;margin:12px 0}
+.hero p{max-width:760px;color:var(--muted);margin:0}
+main{max-width:1120px;margin:28px auto;padding:0 20px 40px}
+.layout{display:grid;grid-template-columns:350px 1fr;gap:18px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:20px;margin-bottom:18px}
+h2{font-size:19px;margin:0 0 5px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+.small{font-size:12px}.muted{color:var(--muted)}
+.drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;border:1.5px dashed #46608c;border-radius:14px;padding:26px 14px;background:var(--panel2);cursor:pointer;transition:border-color .15s,background .15s}
+.drop:hover,.drop.over,.drop:focus-within{border-color:var(--accent);background:#1b2a47}
+.drop strong{font-size:15px}.drop span{font-size:12px;color:var(--muted)}
+.drop input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.drop svg{width:34px;height:34px;stroke:var(--accent);fill:none;stroke-width:1.6}
+.samples{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+.samples button{padding:0;border:2px solid transparent;border-radius:9px;overflow:hidden;background:var(--panel2);cursor:pointer;aspect-ratio:1;line-height:0}
+.samples button:hover{border-color:#46608c}.samples button[aria-pressed=true]{border-color:var(--accent)}
+.samples img{width:100%;height:100%;object-fit:cover;display:block}
+button:focus-visible,.drop:focus-within,summary:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:12px}
+.stat strong{display:block;font-size:21px;letter-spacing:-.02em}.stat span{font-size:11px;color:var(--muted)}
+.stage{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:20px;align-items:start}
+.preview{aspect-ratio:1;border-radius:14px;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--muted);font-size:13px;text-align:center;padding:10px}
+.preview img{width:100%;height:100%;object-fit:contain;display:block}
+.verdict{display:flex;align-items:center;gap:14px;border-radius:14px;padding:14px 16px;border:1px solid var(--line);background:var(--panel2)}
+.verdict .badge{font-size:38px;font-weight:900;letter-spacing:-.03em;line-height:1;min-width:92px}
+.verdict.ok{background:var(--okbg);border-color:#1f6f4e}.verdict.ok .badge{color:var(--ok)}
+.verdict.nok{background:var(--nokbg);border-color:#7c2f38}.verdict.nok .badge{color:var(--nok)}
+.verdict .lbl{font-size:12px;color:var(--muted)}.verdict .conf{font-size:20px;font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.chip{font-size:12px;border:1px solid var(--line);background:var(--panel2);color:#d2ddf0;border-radius:999px;padding:5px 11px}
+.chip.warn{border-color:#8a6a2a;color:var(--gold);background:#2b2412}
+.chip.good{border-color:#1f6f4e;color:var(--ok);background:var(--okbg)}.chip.bad{border-color:#7c2f38;color:var(--nok);background:var(--nokbg)}
+.status{padding:12px;border-radius:10px;background:#17243b;color:#c4d8f5;font-size:13px;margin-top:14px}
+.status.err{background:var(--nokbg);color:#ffd0d0}
+details{margin-top:16px}summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:13px}
+.bars{margin-top:10px;display:grid;gap:7px}
+.bar{display:grid;grid-template-columns:118px 1fr 52px;gap:10px;align-items:center;font-size:12px}
+.bar .track{height:9px;border-radius:9px;background:var(--panel2);overflow:hidden}.bar .fill{height:100%;border-radius:9px;background:var(--accent)}
+.bar.okc .fill{background:var(--ok)}.bar.nokc .fill{background:var(--nok)}.bar b{text-align:right;font-variant-numeric:tabular-nums}
+.bar.top{font-weight:800;color:#fff}
+ul.notes{margin:0;padding-left:18px;color:var(--muted);font-size:13px}ul.notes li{margin:5px 0}
+footer{max-width:1120px;margin:auto;padding:18px 20px 35px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+@media(max-width:860px){.layout{grid-template-columns:1fr}.stage{grid-template-columns:1fr}.preview{max-width:340px}}
+@media(max-width:760px){header{padding:26px 18px}.panel{padding:16px}.samples{grid-template-columns:repeat(6,1fr)}.bar{grid-template-columns:96px 1fr 48px}.verdict .badge{font-size:32px;min-width:78px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body>
+<header><div class="hero">
+<a class="back" href="../../#projects">← Portfolio</a>
+<div class="eyebrow">Computer Vision · Deep Learning</div>
+<h1>Fastener Defect<br>Inspection</h1>
+<p>Upload a photo of a nut, washer or screw. A MobileNetV2 classifier, fine-tuned on about 2,000 photos, runs entirely in your browser and says whether the part is <strong>OK</strong> or <strong>NOK</strong> (defective).</p>
+</div></header>
+<main><div class="layout">
+<aside>
+<section class="panel"><h2>1. Choose an image</h2><p class="sub">JPG or PNG. The image never leaves your device.</p>
+<label class="drop" id="drop" for="file"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0 4 4m-4-4-4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" stroke-linecap="round" stroke-linejoin="round"/></svg><strong>Drop a photo here or click to choose</strong><span>You can also paste an image (Ctrl/Cmd + V)</span><input id="file" type="file" accept="image/*"></label>
+</section>
+<section class="panel"><h2>Or try a sample</h2><p class="sub">Random photos from the held-out test set (the model never saw them while training).</p>
+<div class="samples" id="samples"></div></section>
+<section class="panel"><h2>Model</h2><p class="sub">MobileNetV2 · ImageNet transfer learning · 224×224 input</p>
+<div class="stats">
+<div class="stat"><strong>98.9%</strong><span>OK / NOK accuracy (test)</span></div>
+<div class="stat"><strong>98.6%</strong><span>6-class accuracy (test)</span></div>
+<div class="stat"><strong>217 / 222</strong><span>defective parts caught (test)</span></div>
+<div class="stat"><strong>439</strong><span>held-out test images</span></div>
+</div></section>
+</aside>
+<div>
+<section class="panel" id="resultPanel" aria-live="polite"><h2>2. Result</h2><p class="sub" id="resultSub">Pick an image to inspect.</p>
+<div class="stage">
+<div class="preview" id="preview">No image yet</div>
+<div>
+<div class="verdict" id="verdict" hidden><div class="badge" id="badge">—</div><div><div class="lbl">Verdict</div><div class="conf" id="conf">—</div></div></div>
+<div class="chips" id="chips"></div>
+<div class="status" id="status">The model (8.7 MB) is downloaded the first time you pick an image.</div>
+<details id="detailsBox" hidden><summary>Show all class probabilities</summary><div class="bars" id="bars"></div></details>
+</div></div>
+</section>
+<section class="panel"><h2>About this demo</h2>
+<ul class="notes">
+<li>The model predicts one of six classes (nut / washer / screw × OK / NOK). The verdict adds up the probabilities of the three OK classes against the three NOK classes.</li>
+<li>It was trained only on photos of nuts, washers and screws taken in one setup. Other parts, backgrounds or lighting will not be handled reliably, and any image gets some verdict. This is a portfolio demo, not a quality-control tool.</li>
+<li>Accuracy figures come from a random 15% hold-out split. Photos of the same part may appear in both training and test data, so accuracy on truly new parts is likely lower.</li>
+<li>Inference uses TensorFlow.js. The browser result matches the Python model (checked on the 18 sample images; differences below 2%, caused only by different JPEG decoders).</li>
+</ul></section>
+</div></div></main>
+<footer>Fastener Defect Inspection · M1 DSAI deep learning mini-project · Static GitHub Pages compatible · No backend. TensorFlow.js is loaded from jsDelivr, so the first use needs internet access.</footer>
+<script>
+const TFJS_URL='https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js';
+const MODEL_URL='model/model.json', META_URL='model/class_names.json';
+const PART_EN={Ecrou:'Nut',Rondelle:'Washer',Vis:'Screw'};   // class folders are French
+const SAMPLES=[
+{src:'sample-01.jpg',truth:'Vis NOK'},{src:'sample-02.jpg',truth:'Ecrou NOK'},{src:'sample-03.jpg',truth:'Rondelle OK'},{src:'sample-04.jpg',truth:'Vis OK'},{src:'sample-05.jpg',truth:'Rondelle NOK'},{src:'sample-06.jpg',truth:'Rondelle NOK'},
+{src:'sample-07.jpg',truth:'Rondelle OK'},{src:'sample-08.jpg',truth:'Ecrou OK'},{src:'sample-09.jpg',truth:'Vis NOK'},{src:'sample-10.jpg',truth:'Ecrou OK'},{src:'sample-11.jpg',truth:'Vis OK'},{src:'sample-12.jpg',truth:'Rondelle NOK'},
+{src:'sample-13.jpg',truth:'Ecrou NOK'},{src:'sample-14.jpg',truth:'Ecrou NOK'},{src:'sample-15.jpg',truth:'Vis OK'},{src:'sample-16.jpg',truth:'Vis NOK'},{src:'sample-17.jpg',truth:'Ecrou OK'},{src:'sample-18.jpg',truth:'Rondelle OK'}];
+const MAX_SIDE=1600, LOW_CONF=0.7;
+const $=id=>document.getElementById(id);
+let T=null, model=null, meta=null, loading=null, runId=0, objectUrl=null;
+
+function setStatus(msg,err){const s=$('status');s.textContent=msg;s.className='status'+(err?' err':'');s.hidden=!msg}
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('Could not load TensorFlow.js. Check your internet connection.'));document.head.appendChild(s)})}
+
+async function ensureModel(){
+  if(model) return;
+  if(!loading){loading=(async()=>{
+    setStatus('Loading TensorFlow.js and the model (8.7 MB)…');
+    if(!window.tf) await loadScript(TFJS_URL);
+    T=window.tf;
+    const [m,mm]=await Promise.all([T.loadGraphModel(MODEL_URL,{onProgress:p=>setStatus('Loading the model… '+Math.round(p*100)+'%')}),fetch(META_URL).then(r=>{if(!r.ok)throw new Error('Missing class_names.json');return r.json()})]);
+    meta=mm; await T.ready();
+    T.tidy(()=>m.predict(T.zeros([1,meta.img_size,meta.img_size,3])).dataSync()); // warm-up (compiles shaders)
+    model=m;
+  })().catch(e=>{loading=null;throw e})}
+  return loading;
+}
+
+function prepare(img){
+  const w=img.naturalWidth,h=img.naturalHeight;
+  if(Math.max(w,h)<=MAX_SIDE) return img;
+  const k=MAX_SIDE/Math.max(w,h), c=document.createElement('canvas');
+  c.width=Math.round(w*k);c.height=Math.round(h*k);
+  const g=c.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(img,0,0,c.width,c.height);return c;
+}
+function predict(img){
+  const S=meta.img_size;
+  const out=T.tidy(()=>{
+    const x=T.image.resizeBilinear(T.browser.fromPixels(prepare(img)).toFloat(),[S,S],false,true); // same resize as tf.image.resize in training
+    return model.predict(x.expandDims(0)).squeeze();      // raw 0..255 in; scaling to [-1,1] is inside the model
+  });
+  const p=Array.from(out.dataSync());out.dispose();return p;
+}
+
+function parse(name){const i=name.lastIndexOf(' ');return {part:PART_EN[name.slice(0,i)]||name.slice(0,i),ok:name.slice(i+1)==='OK'}}
+function render(probs,ms,truth){
+  const names=meta.class_names, isOk=meta.is_ok;
+  const pOk=probs.reduce((a,p,i)=>a+(isOk[i]?p:0),0), ok=pOk>=0.5, conf=ok?pOk:1-pOk;
+  const parts={};names.forEach((n,i)=>{const k=parse(n).part;parts[k]=(parts[k]||0)+probs[i]});
+  const [part,pp]=Object.entries(parts).sort((a,b)=>b[1]-a[1])[0];
+  const v=$('verdict');v.hidden=false;v.className='verdict '+(ok?'ok':'nok');
+  $('badge').textContent=ok?'OK':'NOK';$('conf').textContent=(conf*100).toFixed(1)+'% confidence';
+  const chips=[`<span class="chip">Part: ${part} (${(pp*100).toFixed(0)}%)</span>`];
+  if(conf<LOW_CONF) chips.push('<span class="chip warn">Low confidence: treat with caution</span>');
+  if(truth){const t=parse(truth),agree=t.ok===ok;chips.push(`<span class="chip ${agree?'good':'bad'}">Dataset label: ${t.ok?'OK':'NOK'} ${agree?'✓ model agrees':'✗ model disagrees'}</span>`)}
+  chips.push(`<span class="chip">${ms.toFixed(0)} ms · ${T.getBackend()}</span>`);
+  $('chips').innerHTML=chips.join('');
+  const top=probs.indexOf(Math.max(...probs));
+  $('bars').innerHTML=names.map((n,i)=>`<div class="bar ${isOk[i]?'okc':'nokc'}${i===top?' top':''}"><span>${PART_EN[n.slice(0,n.lastIndexOf(' '))]||n} ${isOk[i]?'OK':'NOK'}</span><div class="track"><div class="fill" style="width:${(probs[i]*100).toFixed(1)}%"></div></div><b>${(probs[i]*100).toFixed(1)}%</b></div>`).join('');
+  $('detailsBox').hidden=false;$('resultSub').textContent='Prediction for the selected image.';setStatus('');
+  if(innerWidth<=860){const r=$('resultPanel').getBoundingClientRect();if(r.top<0||r.bottom>innerHeight){$('resultPanel').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})}} // single-column layout: bring the result into view
+}
+
+async function run(img,truth){
+  const id=++runId;
+  try{
+    $('verdict').hidden=true;$('chips').innerHTML='';$('detailsBox').hidden=true;
+    await ensureModel(); if(id!==runId) return;
+    setStatus('Analysing…');
+    await new Promise(r=>requestAnimationFrame(()=>setTimeout(r,0)));
+    const t0=performance.now(), probs=predict(img), ms=performance.now()-t0;
+    if(id===runId) render(probs,ms,truth);
+  }catch(e){ if(id===runId){setStatus(e.message||'Something went wrong.',true)} console.error(e) }
+}
+function show(url,truth,btn){
+  const img=new Image();
+  img.onload=()=>{ $('preview').innerHTML='';img.alt='Selected image';$('preview').appendChild(img); run(img,truth) };
+  img.onerror=()=>{ $('preview').textContent='No image yet'; setStatus('This image could not be read. Try a JPG or PNG file.',true) };
+  img.src=url;
+  document.querySelectorAll('#samples button').forEach(b=>b.setAttribute('aria-pressed',b===btn?'true':'false'));
+}
+function fromFile(f){
+  if(!f) return; if(!/^image\//.test(f.type)){setStatus('Please choose an image file (JPG or PNG).',true);return}
+  if(f.size>30*1024*1024){setStatus('The file is larger than 30 MB. Please choose a smaller image.',true);return}
+  if(objectUrl) URL.revokeObjectURL(objectUrl); objectUrl=URL.createObjectURL(f); show(objectUrl,null,null);
+}
+
+$('samples').innerHTML=SAMPLES.map((s,i)=>`<button type="button" aria-pressed="false" aria-label="Sample image ${i+1}" data-i="${i}"><img src="samples/${s.src}" alt="" loading="lazy"></button>`).join('');
+$('samples').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const s=SAMPLES[+b.dataset.i];show('samples/'+s.src,s.truth,b)});
+$('file').addEventListener('change',e=>{fromFile(e.target.files[0]);e.target.value=''});
+const drop=$('drop');
+['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>fromFile(e.dataTransfer.files[0]));
+document.addEventListener('paste',e=>{const it=[...(e.clipboardData?.items||[])].find(i=>i.type.startsWith('image/'));if(it)fromFile(it.getAsFile())});
+</script></body></html>

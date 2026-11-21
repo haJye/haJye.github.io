@@ -1,0 +1,20 @@
+{
+  "class_names": [
+    "Ecrou NOK",
+    "Ecrou OK",
+    "Rondelle NOK",
+    "Rondelle OK",
+    "Vis NOK",
+    "Vis OK"
+  ],
+  "is_ok": [
+    false,
+    true,
+    false,
+    true,
+    false,
+    true
+  ],
+  "img_size": 224,
+  "preprocessing": "raw RGB 0..255 float input; Rescaling(1/127.5, -1) is inside the model"
+}
